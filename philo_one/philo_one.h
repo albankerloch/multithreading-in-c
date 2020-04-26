@@ -17,6 +17,8 @@ typedef struct s_node
     int  tt_eat;
     int  tt_sleep;
     long long start;
+    int  count_eat;
+    int  nb_eat;
     struct s_node *next;
 } node;
 
