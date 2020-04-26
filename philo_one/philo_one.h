@@ -12,6 +12,8 @@ typedef struct s_node
 {
     int value;
     pthread_mutex_t *lock_s;
+    pthread_mutex_t *lock;
+    long long start;
     struct s_node *next;
 } node;
 

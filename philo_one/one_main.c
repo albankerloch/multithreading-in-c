@@ -13,15 +13,43 @@ static void * fn_philo (void * p_data)
   node *n;
 
   n = p_data;
+  n->start = current_timestamp();
+
   pthread_mutex_lock(n->lock_s);
 
-  ft_putlnbr_fd(current_timestamp(), 1);
+  ft_putlnbr_fd(n->start, 1);
   write(1," ", 1);
   ft_putnbr_fd(n->value, 1);
   //  ft_putnbr_fd(*i, 1);
   write(1, " is thinking\n", 14);
 
   pthread_mutex_unlock(n->lock_s);
+
+  while (1)
+  {
+    pthread_mutex_lock(n->lock);
+    if (pthread_mutex_lock(n->next->lock) != 0)
+    {
+      pthread_mutex_unlock(n->lock);
+      continue;
+    }
+    break;
+  }
+  
+  n->start = current_timestamp();
+
+  pthread_mutex_lock(n->lock_s);
+  
+  ft_putlnbr_fd(n->start, 1);
+  write(1," ", 1);
+  ft_putnbr_fd(n->value, 1);
+  //  ft_putnbr_fd(*i, 1);
+  write(1, " is eating\n", 11);
+
+  pthread_mutex_unlock(n->lock_s);
+  pthread_mutex_unlock(n->next->lock);
+  pthread_mutex_unlock(n->lock);
+
   return NULL;
 }
  
@@ -30,12 +58,21 @@ int main (int ac, char **av)
   pthread_t thread_philo[3];
   pthread_mutex_t lock[3];
   pthread_mutex_t lock_std;
+  int time_to_die;
+  int time_to_eat;
+  int time_to_sleep;
   int i;
   node n[3];
   void *t;
   
   (void)ac;
   (void)av;
+  time_to_die = 1000;
+  time_to_eat = 100;
+  time_to_sleep = 100;
+  (void)time_to_die;
+  (void)time_to_eat;
+  (void)time_to_sleep;
 
   n[1].value = 1;
   n[1].next = &n[2];
@@ -55,6 +92,7 @@ int main (int ac, char **av)
    t = &n[i];
    if (pthread_mutex_init(&lock[i], NULL) != 0)
      return EXIT_FAILURE;
+   n[i].lock = &lock[i];
    if(pthread_create(&thread_philo[i], NULL, fn_philo, t))
      return EXIT_FAILURE;
    i++;
