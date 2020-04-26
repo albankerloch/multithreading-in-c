@@ -65,7 +65,7 @@ static void * fn_philo (void * p_data)
 
   pthread_mutex_unlock(n->lock_s);
 
-  usleep(500000);
+  usleep(n->tt_eat);
 
   pthread_mutex_unlock(n->next->lock);
   pthread_mutex_unlock(n->lock);
@@ -75,9 +75,11 @@ static void * fn_philo (void * p_data)
   ft_putlnbr_fd(current_timestamp(), 1);
   write(1," ", 1);
   ft_putnbr_fd(n->value, 1);
-  write(1, " has died\n", 10);
+  write(1, " is sleeping\n", 13);
 
   pthread_mutex_unlock(n->lock_s);
+
+  usleep(n->tt_sleep);
 
   return NULL;
 }
@@ -97,8 +99,8 @@ int main (int ac, char **av)
   (void)ac;
   (void)av;
   time_to_die = 1000;
-  time_to_eat = 100;
-  time_to_sleep = 100;
+  time_to_eat = 500000;
+  time_to_sleep = 1000000;
   (void)time_to_die;
   (void)time_to_eat;
   (void)time_to_sleep;
@@ -122,6 +124,9 @@ int main (int ac, char **av)
    if (pthread_mutex_init(&lock[i], NULL) != 0)
      return EXIT_FAILURE;
    n[i].lock = &lock[i];
+   n[i].tt_die = time_to_die;
+   n[i].tt_eat = time_to_eat;
+   n[i].tt_sleep = time_to_sleep;
    if(pthread_create(&thread_philo[i], NULL, fn_philo, t))
      return EXIT_FAILURE;
    i++;
