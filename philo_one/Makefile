@@ -12,6 +12,7 @@
 
 SRCS =	one_main.c \
 	ft_atoi.c \
+	ft_putlnbr_fd.c \
 	ft_putnbr_fd.c \
 	ft_putstr_fd.c \
 	ft_strlen.c \

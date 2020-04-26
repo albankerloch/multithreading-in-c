@@ -12,9 +12,9 @@
 
 #include "philo_one.h"
 
-static int	ft_puiss_dix(int n)
+static long long	ft_puiss_dix(int n)
 {
-	int result;
+	long long result;
 
 	if (n == 0)
 	{
@@ -27,11 +27,11 @@ static int	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void	ft_rec(int a, int n, int fd)
+static void	ft_rec(long long a, int n, int fd)
 {
 	char	c;
-	int		i;
-	int		b;
+	long long	i;
+	long long	b;
 
 	i = ft_puiss_dix(n);
 	c = a / i + 48;
@@ -43,27 +43,22 @@ static void	ft_rec(int a, int n, int fd)
 	}
 }
 
-void		ft_putnbr_fd(int a, int fd)
+void		ft_putlnbr_fd(long long a, int fd)
 {
 	int n;
-	int b;
+	long long b;
 
-	if (a == -2147483648)
-		write(fd, "-2147483648", 11);
-	else
+	if (a < 0)
 	{
-		if (a < 0)
-		{
-			write(fd, "-", 1);
-			a = -a;
-		}
-		b = a;
-		n = 0;
-		while ((b % 10) != b)
-		{
-			b = b / 10;
-			n++;
-		}
-		ft_rec(a, n, fd);
+	  write(fd, "-", 1);
+		a = -a;
 	}
+	b = a;
+	n = 0;
+	while ((b % 10) != b)
+	{
+		b = b / 10;
+		n++;
+	}
+	ft_rec(a, n, fd);
 }
