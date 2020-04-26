@@ -26,61 +26,63 @@ static void * fn_philo (void * p_data)
 
   while (1)
   {
-    if (pthread_mutex_lock(n->lock) != 0)
+    while (1)
     {
-      usleep(500000);
-      continue;
+      if (pthread_mutex_lock(n->lock) != 0)
+      {
+        usleep(500000);
+        continue;
+      }
+      pthread_mutex_lock(n->lock_s);
+      ft_putlnbr_fd(current_timestamp(), 1);
+      write(1," ", 1);
+      ft_putnbr_fd(n->value, 1);
+      ft_putnbr_fd(n->value, 1);
+      write(1, " has taken a fork\n", 18);
+      pthread_mutex_unlock(n->lock_s);
+      if (pthread_mutex_lock(n->next->lock) != 0)
+      {
+        pthread_mutex_unlock(n->lock);
+        usleep(500000);
+        continue;
+      }
+      pthread_mutex_lock(n->lock_s);
+      ft_putlnbr_fd(current_timestamp(), 1);
+      write(1," ", 1);
+      ft_putnbr_fd(n->value, 1);
+      ft_putnbr_fd(n->next->value, 1);
+      write(1, " has taken a fork\n", 18);
+      pthread_mutex_unlock(n->lock_s);
+      break;
     }
+    
+    n->start = current_timestamp();
+
     pthread_mutex_lock(n->lock_s);
+    
+    ft_putlnbr_fd(n->start, 1);
+    write(1," ", 1);
+    ft_putnbr_fd(n->value, 1);
+    write(1, " is eating\n", 11);
+
+    pthread_mutex_unlock(n->lock_s);
+
+    usleep(n->tt_eat);
+
+    pthread_mutex_unlock(n->next->lock);
+    pthread_mutex_unlock(n->lock);
+
+    pthread_mutex_lock(n->lock_s);
+    
     ft_putlnbr_fd(current_timestamp(), 1);
     write(1," ", 1);
     ft_putnbr_fd(n->value, 1);
-    ft_putnbr_fd(n->value, 1);
-    write(1, " has taken a fork\n", 18);
+    write(1, " is sleeping\n", 13);
+
     pthread_mutex_unlock(n->lock_s);
-    if (pthread_mutex_lock(n->next->lock) != 0)
-    {
-      pthread_mutex_unlock(n->lock);
-      usleep(500000);
-      continue;
-    }
-    pthread_mutex_lock(n->lock_s);
-    ft_putlnbr_fd(current_timestamp(), 1);
-    write(1," ", 1);
-    ft_putnbr_fd(n->value, 1);
-    ft_putnbr_fd(n->next->value, 1);
-    write(1, " has taken a fork\n", 18);
-    pthread_mutex_unlock(n->lock_s);
-    break;
+
+    usleep(n->tt_sleep);
   }
-  
-  n->start = current_timestamp();
-
-  pthread_mutex_lock(n->lock_s);
-  
-  ft_putlnbr_fd(n->start, 1);
-  write(1," ", 1);
-  ft_putnbr_fd(n->value, 1);
-  write(1, " is eating\n", 11);
-
-  pthread_mutex_unlock(n->lock_s);
-
-  usleep(n->tt_eat);
-
-  pthread_mutex_unlock(n->next->lock);
-  pthread_mutex_unlock(n->lock);
-
-  pthread_mutex_lock(n->lock_s);
-  
-  ft_putlnbr_fd(current_timestamp(), 1);
-  write(1," ", 1);
-  ft_putnbr_fd(n->value, 1);
-  write(1, " is sleeping\n", 13);
-
-  pthread_mutex_unlock(n->lock_s);
-
-  usleep(n->tt_sleep);
-
   return NULL;
 }
  
