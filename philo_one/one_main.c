@@ -20,19 +20,37 @@ static void * fn_philo (void * p_data)
   ft_putlnbr_fd(n->start, 1);
   write(1," ", 1);
   ft_putnbr_fd(n->value, 1);
-  //  ft_putnbr_fd(*i, 1);
   write(1, " is thinking\n", 14);
 
   pthread_mutex_unlock(n->lock_s);
 
   while (1)
   {
-    pthread_mutex_lock(n->lock);
+    if (pthread_mutex_lock(n->lock) != 0)
+    {
+      usleep(500000);
+      continue;
+    }
+    pthread_mutex_lock(n->lock_s);
+    ft_putlnbr_fd(current_timestamp(), 1);
+    write(1," ", 1);
+    ft_putnbr_fd(n->value, 1);
+    ft_putnbr_fd(n->value, 1);
+    write(1, " has taken a fork\n", 18);
+    pthread_mutex_unlock(n->lock_s);
     if (pthread_mutex_lock(n->next->lock) != 0)
     {
       pthread_mutex_unlock(n->lock);
+      usleep(500000);
       continue;
     }
+    pthread_mutex_lock(n->lock_s);
+    ft_putlnbr_fd(current_timestamp(), 1);
+    write(1," ", 1);
+    ft_putnbr_fd(n->value, 1);
+    ft_putnbr_fd(n->next->value, 1);
+    write(1, " has taken a fork\n", 18);
+    pthread_mutex_unlock(n->lock_s);
     break;
   }
   
@@ -43,12 +61,23 @@ static void * fn_philo (void * p_data)
   ft_putlnbr_fd(n->start, 1);
   write(1," ", 1);
   ft_putnbr_fd(n->value, 1);
-  //  ft_putnbr_fd(*i, 1);
   write(1, " is eating\n", 11);
 
   pthread_mutex_unlock(n->lock_s);
+
+  usleep(500000);
+
   pthread_mutex_unlock(n->next->lock);
   pthread_mutex_unlock(n->lock);
+
+  pthread_mutex_lock(n->lock_s);
+  
+  ft_putlnbr_fd(current_timestamp(), 1);
+  write(1," ", 1);
+  ft_putnbr_fd(n->value, 1);
+  write(1, " has died\n", 10);
+
+  pthread_mutex_unlock(n->lock_s);
 
   return NULL;
 }
@@ -101,6 +130,10 @@ int main (int ac, char **av)
   while (i < 3)
   {
     pthread_join (thread_philo[i], NULL);
+    i++;
+  }
+  while (i < 3)
+  {
     pthread_mutex_destroy(&lock[i]);
     i++;
   }
