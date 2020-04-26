@@ -19,6 +19,7 @@ typedef struct s_node
     long long start;
     int  count_eat;
     int  nb_eat;
+    pthread_t *thread;
     struct s_node *next;
 } node;
 
