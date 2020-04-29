@@ -7,23 +7,7 @@ long long current_timestamp()
     long long milliseconds = te.tv_sec*1000LL + te.tv_usec/1000;
     return milliseconds;
 }
-/*
-static void * fn_monitor (void * p_data)
-{
-  node *n;
 
-  n = p_data;
-
-  (void)n;
-  while (1)
-  {
-  //  write(1, "   is monitoring\n", 17);
-    usleep(500000);
-  }
-
-  return NULL;
-}
-*/
 static void * fn_philo (void * p_data)
 {
   node *n;
@@ -119,7 +103,6 @@ static void * fn_philo (void * p_data)
 int main (int ac, char **av)
 {
   pthread_t thread_philo[3];
-  pthread_t monitor;
   pthread_mutex_t lock[3];
   pthread_mutex_t lock_std;
   int time_to_die;
@@ -128,7 +111,6 @@ int main (int ac, char **av)
   int i;
   int nb_eat;
   node n[3];
-  node *nl;
   void *t;
   
   (void)ac;
@@ -164,40 +146,7 @@ int main (int ac, char **av)
      return EXIT_FAILURE;
    i++;
   }
-  /*
-  if(pthread_create(&monitor, NULL, fn_monitor, t))
-     return EXIT_FAILURE;
-  pthread_detach(monitor);*/
-  (void)monitor;
   i = 1;
-  nl = &n[1];
-  while(nl->next)
-  {
-    usleep(50000);
-    pthread_mutex_lock(nl->lock_s);
-    ft_putlnbr_fd(current_timestamp(), 1);
-    write(1," ", 1);
-    ft_putlnbr_fd(nl->start, 1);
-    write(1," ", 1);
-    ft_putnbr_fd(nl->value, 1);
-    write(1, " has test\n", 10);
-    pthread_mutex_unlock(nl->lock_s);
-    if (current_timestamp() - nl->start > time_to_die)
-    {
-      pthread_mutex_lock(nl->lock_s);
-      ft_putlnbr_fd(current_timestamp(), 1);
-      write(1," ", 1);
-      ft_putlnbr_fd(nl->start, 1);
-      write(1," ", 1);
-      ft_putnbr_fd(nl->value, 1);
-      write(1, " has died\n", 10);
-      pthread_mutex_unlock(nl->lock_s);
-      return EXIT_SUCCESS;
-    }
-    nl = nl->next;
-    //write(1, "   is monitoring\n", 17);
-    usleep(50000);
-  }
   while (i < 3)
   {
     pthread_join(thread_philo[i], NULL);
