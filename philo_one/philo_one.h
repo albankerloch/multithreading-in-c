@@ -13,6 +13,7 @@ typedef struct s_node
     int value;
     pthread_mutex_t *lock_s;
     pthread_mutex_t *lock;
+    pthread_mutex_t *lock_die;
     int  tt_die;
     int  tt_eat;
     int  tt_sleep;
@@ -20,6 +21,7 @@ typedef struct s_node
     int  count_eat;
     int  nb_eat;
     pthread_t *thread;
+    pthread_t *monitor_die;
     struct s_node *next;
 } node;
 
