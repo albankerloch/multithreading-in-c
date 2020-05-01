@@ -154,16 +154,12 @@ int main (int ac, char **av)
   
   if (ft_arg(&var, ac, av))
     return EXIT_FAILURE;
-  (void)var.nb;
-  ft_putnbr_fd(var.time_to_die,1);
+  if (ft_create(&var))
+    return EXIT_FAILURE; 
+     
   n[1].next = &n[2];
   n[2].next = &n[1];
-
-  if (pthread_mutex_init(&(var.lock_std), NULL) != 0)
-     return EXIT_FAILURE;
-
-  if (pthread_mutex_init(&(var.lock_die), NULL) != 0)
-     return EXIT_FAILURE;
+  
   pthread_mutex_lock(&(var.lock_die));
 
   write(1, "Creation\n", 9);

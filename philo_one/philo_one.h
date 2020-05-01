@@ -8,17 +8,6 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-typedef struct s_bin
-{
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int nb_eat;
-    int nb;
-    pthread_mutex_t lock_std;
-    pthread_mutex_t lock_die;
-} bin;
-
 typedef struct s_node
 {
     int value;
@@ -36,12 +25,25 @@ typedef struct s_node
     struct s_node *next;
 } node;
 
-size_t				ft_strlen(const char *str);
-void				ft_putstr_fd(char *s, int fd);
-void				ft_putlnbr_fd(long long n, int fd);
-void				ft_putnbr_fd(int n, int fd);
+typedef struct s_bin
+{
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int nb_eat;
+    int nb;
+    pthread_mutex_t lock_std;
+    pthread_mutex_t lock_die;
+    node *philo;
+} bin;
+
+size_t			ft_strlen(const char *str);
+void			ft_putstr_fd(char *s, int fd);
+void			ft_putlnbr_fd(long long n, int fd);
+void			ft_putnbr_fd(int n, int fd);
 int				ft_isdigit(int i);
 int				ft_atoi(const char *str);
-int ft_arg(bin *var, int ac, char **av);
+int             ft_arg(bin *var, int ac, char **av);
+int             ft_create(bin *var);
 
 #endif

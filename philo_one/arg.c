@@ -9,5 +9,39 @@ int ft_arg(bin *var, int ac, char **av)
     var->time_to_die = ft_atoi(av[3]);
     var->time_to_eat = ft_atoi(av[4]);
     var->nb_eat = ac == 6 ? ft_atoi(av[5]) : - 1;
+    
     return (0);   
 }
+
+static int ft_create_philo(bin *var)
+{
+    int i;
+
+    i = 1;
+    while (i < var->nb + 1)
+    {
+        i++;
+    }
+    return (0);
+}
+
+int ft_create(bin *var)
+{
+    if (pthread_mutex_init(&(var->lock_std), NULL) != 0)
+     return (1);
+    if (pthread_mutex_init(&(var->lock_die), NULL) != 0)
+    {
+        pthread_mutex_destroy(&(var->lock_std));
+        return (1);
+    }
+    if(!(var->philo = malloc((var->nb + 1) * sizeof(node))))
+    {
+        pthread_mutex_destroy(&(var->lock_die));
+        pthread_mutex_destroy(&(var->lock_std));
+        return (1);
+    }
+    if (ft_create_philo(var))
+        return (1);
+    return (0);
+}
+
