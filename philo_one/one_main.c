@@ -147,37 +147,36 @@ int main (int ac, char **av)
   pthread_t thread_philo[3];
   pthread_t thread_die[3];
   pthread_mutex_t lock[3];
-  pthread_mutex_t lock_std;
-  pthread_mutex_t lock_die;
   int i;
   node n[3];
   void *t;
   bin var;
   
-  ft_arg(&var, ac, av);
+  if (ft_arg(&var, ac, av))
+    return EXIT_FAILURE;
   (void)var.nb;
   ft_putnbr_fd(var.time_to_die,1);
   n[1].next = &n[2];
   n[2].next = &n[1];
 
-  if (pthread_mutex_init(&lock_std, NULL) != 0)
+  if (pthread_mutex_init(&(var.lock_std), NULL) != 0)
      return EXIT_FAILURE;
 
-  if (pthread_mutex_init(&lock_die, NULL) != 0)
+  if (pthread_mutex_init(&(var.lock_die), NULL) != 0)
      return EXIT_FAILURE;
-  pthread_mutex_lock(&lock_die);
+  pthread_mutex_lock(&(var.lock_die));
 
   write(1, "Creation\n", 9);
   i = 1;
-  while (i < 3)
+  while (i < var.nb + 1)
   {
    t = &n[i];
    if (pthread_mutex_init(&lock[i], NULL) != 0)
      return EXIT_FAILURE;
    n[i].value = i;
    n[i].lock = &lock[i];
-   n[i].lock_s = &lock_std;
-   n[i].lock_die = &lock_die;
+   n[i].lock_s = &(var.lock_std);
+   n[i].lock_die = &(var.lock_die);
    n[i].tt_die = var.time_to_die;
    n[i].tt_eat = var.time_to_eat;
    n[i].tt_sleep = var.time_to_sleep;
@@ -190,14 +189,15 @@ int main (int ac, char **av)
    pthread_detach(thread_philo[i]);
    i++;
   }
-  pthread_mutex_lock(&lock_die);
-  pthread_mutex_unlock(&lock_die);
+  pthread_mutex_lock(&(var.lock_die));
+  pthread_mutex_unlock(&(var.lock_die));
   i = 1;
-  while (i < 3)
+  while (i < var.nb + 1)
   {
     pthread_mutex_destroy(&lock[i]);
     i++;
   }
-  pthread_mutex_destroy(&lock_std);
+  pthread_mutex_destroy(&(var.lock_std));
+  pthread_mutex_destroy(&(var.lock_die));
   return EXIT_SUCCESS;
 }

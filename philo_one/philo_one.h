@@ -15,6 +15,8 @@ typedef struct s_bin
     int time_to_sleep;
     int nb_eat;
     int nb;
+    pthread_mutex_t lock_std;
+    pthread_mutex_t lock_die;
 } bin;
 
 typedef struct s_node
