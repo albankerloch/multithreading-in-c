@@ -24,6 +24,7 @@ typedef struct s_node
     pthread_t monitor_die;
     int fork_lock;
     struct s_node *next;
+    int nb;
 } node;
 
 typedef struct s_bin

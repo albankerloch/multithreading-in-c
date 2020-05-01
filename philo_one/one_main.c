@@ -8,13 +8,41 @@ long long current_timestamp()
     return milliseconds;
 }
 
+static void * fn_monitor_eat (void * p_data)
+{
+  node *n;
+  int nb_eat_total;
+  int i;
+
+  n = p_data;
+  while (1)
+  {
+    usleep(10*1000);
+    nb_eat_total = 0;
+    i = 1;
+    nb_eat_total = nb_eat_total + n->count_eat;
+    (void)i;
+    
+    while (i < n->nb)
+    {
+      nb_eat_total = nb_eat_total + n->count_eat;
+      n = n->next;
+      i++;
+    }    
+    if (nb_eat_total == n->nb * n->nb_eat)
+    {
+      pthread_mutex_unlock(n->lock_die);
+      return NULL;
+    }
+  }
+  return NULL;
+}
 
 static void * fn_monitor (void * p_data)
 {
   node *n;
 
   n = p_data;
-  //ft_putlnbr_fd(n->start, 1);
   while (1)
   {
     usleep(10*1000);/*
@@ -26,7 +54,7 @@ static void * fn_monitor (void * p_data)
     ft_putnbr_fd(n->value, 1);
     write(1, " has test\n", 10);
     pthread_mutex_unlock(n->lock_s);*/
-    if (current_timestamp() - n->start > n->tt_die)
+    if (current_timestamp() - n->start > n->tt_die && n->count_eat != n->nb_eat)
     {
       pthread_mutex_lock(n->lock_s);
       ft_putlnbr_fd(current_timestamp(), 1);
@@ -35,7 +63,7 @@ static void * fn_monitor (void * p_data)
       write(1," ", 1);
       ft_putnbr_fd(n->value, 1);
       write(1, " has died\n", 10);
-      pthread_mutex_unlock(n->lock_s);
+      //pthread_mutex_unlock(n->lock_s);
       pthread_mutex_unlock(n->lock_die);
       return NULL;
     }
@@ -65,24 +93,6 @@ static void * fn_philo (void * p_data)
 
   while (1)
   {
-
-    /*
-    while (1)
-    {
-      if (pthread_mutex_lock(&(n->lock)) != 0)
-      {
-        //usleep(1000);
-        continue;
-      }
-      if (pthread_mutex_lock(&(n->next->lock)) != 0)
-      {
-        pthread_mutex_unlock(&(n->lock));
-        //usleep(1000);
-        continue;
-      }
-      break;
-    }
-    */
     while (!(n->fork_lock == 0 && n->next->fork_lock == 0))
     {
       usleep(10);
@@ -131,6 +141,7 @@ static void * fn_philo (void * p_data)
 
     if (n->count_eat == n->nb_eat)
     {
+      while (1)
       //pthread_mutex_unlock(n->lock_die);
       return NULL;
     }
@@ -178,6 +189,10 @@ int main (int ac, char **av)
    pthread_detach(var.philo[i].thread);
    i++;
   }
+  t = &(var.philo[1]);
+  if(pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
+    return (ft_clear_mutex(&var, var.nb));
+  pthread_detach(var.philo[i].thread);
   pthread_mutex_lock(&(var.lock_die));
   pthread_mutex_unlock(&(var.lock_die));
   ft_clear_mutex(&var, var.nb);
