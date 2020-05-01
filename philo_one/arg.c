@@ -20,6 +20,18 @@ static int ft_create_philo(bin *var)
     i = 1;
     while (i < var->nb + 1)
     {
+        if (i == var->nb)
+            var->philo[i].next = &(var->philo[1]);
+        else
+            var->philo[i].next = &(var->philo[i + 1]);
+        var->philo[i].value = i;
+        var->philo[i].lock_s = &(var->lock_std);
+        var->philo[i].lock_die = &(var->lock_die);
+        var->philo[i].tt_die = var->time_to_die;
+        var->philo[i].tt_eat = var->time_to_eat;
+        var->philo[i].tt_sleep = var->time_to_sleep;
+        var->philo[i].count_eat = 0;
+        var->philo[i].nb_eat = var->nb_eat;
         i++;
     }
     return (0);
