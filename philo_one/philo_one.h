@@ -48,5 +48,9 @@ int				ft_atoi(const char *str);
 int             ft_arg(bin *var, int ac, char **av);
 int             ft_create(bin *var);
 int             ft_clear_mutex(bin *var, int i);
+void			*fn_philo(void *p_data);
+void			*fn_monitor_eat(void *p_data);
+void			*fn_monitor(void *p_data);
+long long		current_timestamp(void);
 
 #endif

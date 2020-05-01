@@ -27,9 +27,9 @@ static long long	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void	ft_rec(long long a, int n, int fd)
+static void			ft_rec(long long a, int n, int fd)
 {
-	char	c;
+	char		c;
 	long long	i;
 	long long	b;
 
@@ -43,14 +43,14 @@ static void	ft_rec(long long a, int n, int fd)
 	}
 }
 
-void		ft_putlnbr_fd(long long a, int fd)
+void				ft_putlnbr_fd(long long a, int fd)
 {
-	int n;
-	long long b;
+	int			n;
+	long long	b;
 
 	if (a < 0)
 	{
-	  write(fd, "-", 1);
+		write(fd, "-", 1);
 		a = -a;
 	}
 	b = a;
