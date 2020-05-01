@@ -17,7 +17,7 @@ static void * fn_monitor (void * p_data)
   //ft_putlnbr_fd(n->start, 1);
   while (1)
   {
-    usleep(50000);/*
+    usleep(10);/*
     pthread_mutex_lock(n->lock_s);
     ft_putlnbr_fd(current_timestamp(), 1);
     write(1," ", 1);
@@ -69,7 +69,7 @@ static void * fn_philo (void * p_data)
     {
       if (pthread_mutex_lock(&(n->lock)) != 0)
       {
-        usleep(500000);
+        usleep(20);
         continue;
       }
       pthread_mutex_lock(n->lock_s);
@@ -82,7 +82,7 @@ static void * fn_philo (void * p_data)
       if (pthread_mutex_lock(&(n->next->lock)) != 0)
       {
         pthread_mutex_unlock(&(n->lock));
-        usleep(500000);
+        usleep(20);
         continue;
       }
       pthread_mutex_lock(n->lock_s);
