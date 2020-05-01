@@ -13,6 +13,22 @@ int ft_arg(bin *var, int ac, char **av)
     return (0);   
 }
 
+int ft_clear_mutex(bin *var, int i)
+{
+    int j;
+
+    j = 1;
+    while (j < i + 1)
+    {
+        pthread_mutex_destroy(&(var->philo[i].lock));
+        j++;
+    }
+    pthread_mutex_destroy(&(var->lock_die));
+    pthread_mutex_destroy(&(var->lock_std));
+    free(var->philo);
+    return (0);
+}
+
 static int ft_create_philo(bin *var)
 {
     int i;
@@ -33,7 +49,7 @@ static int ft_create_philo(bin *var)
         var->philo[i].count_eat = 0;
         var->philo[i].nb_eat = var->nb_eat;
         if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
-            return (1);
+            return (ft_clear_mutex(var, i));
         i++;
     }
     return (0);

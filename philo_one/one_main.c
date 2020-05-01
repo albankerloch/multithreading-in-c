@@ -149,32 +149,21 @@ int main (int ac, char **av)
   void *t;
       
   if (ft_arg(&var, ac, av))
-    return EXIT_FAILURE;
+    return (1);
   if (ft_create(&var))
-    return EXIT_FAILURE;
-    
+    return (1);
   pthread_mutex_lock(&(var.lock_die));
-
-  write(1, "Creation\n", 9);
   i = 1;
   while (i < var.nb + 1)
   {
    t = &(var.philo[i]);
    if(pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
-     return EXIT_FAILURE;
+     return (ft_clear_mutex(&var, var.nb));
    pthread_detach(var.philo[i].thread);
    i++;
   }
   pthread_mutex_lock(&(var.lock_die));
   pthread_mutex_unlock(&(var.lock_die));
-  i = 1;
-  while (i < var.nb + 1)
-  {
-    pthread_mutex_destroy(&(var.philo[i].lock));
-    i++;
-  }
-  pthread_mutex_destroy(&(var.lock_std));
-  pthread_mutex_destroy(&(var.lock_die));
-  free(var.philo);
-  return EXIT_SUCCESS;
+  ft_clear_mutex(&var, var.nb);
+  return (0);
 }

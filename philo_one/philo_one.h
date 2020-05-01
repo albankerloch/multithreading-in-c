@@ -45,5 +45,6 @@ int				ft_isdigit(int i);
 int				ft_atoi(const char *str);
 int             ft_arg(bin *var, int ac, char **av);
 int             ft_create(bin *var);
+int             ft_clear_mutex(bin *var, int i);
 
 #endif
