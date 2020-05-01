@@ -144,61 +144,33 @@ static void * fn_philo (void * p_data)
  
 int main (int ac, char **av)
 {
-  
   int i;
   bin var;
   void *t;
-  
-  node n[3];
-  //pthread_t thread_philo[3];
-  //pthread_t thread_die[3];
-  //pthread_mutex_t lock[3];
-  
-  n[1].next = &n[2];
-  n[2].next = &n[1];
-  
-  
+      
   if (ft_arg(&var, ac, av))
     return EXIT_FAILURE;
   if (ft_create(&var))
-    return EXIT_FAILURE;  
-  
-  
+    return EXIT_FAILURE;
+    
   pthread_mutex_lock(&(var.lock_die));
 
   write(1, "Creation\n", 9);
   i = 1;
   while (i < var.nb + 1)
   {
-   t = &n[i];
-   if (pthread_mutex_init(&(n[i].lock), NULL) != 0)
-     return EXIT_FAILURE;
-   n[i].value = i;
-   n[i].lock_s = &(var.lock_std);
-   n[i].lock_die = &(var.lock_die);
-   n[i].tt_die = var.time_to_die;
-   n[i].tt_eat = var.time_to_eat;
-   n[i].tt_sleep = var.time_to_sleep;
-   n[i].count_eat = 0;
-   n[i].nb_eat = var.nb_eat;
-   if(pthread_create(&(n[i].thread), NULL, fn_philo, t))
-     return EXIT_FAILURE;
-   pthread_detach(n[i].thread);
-   i++;
-   /*
    t = &(var.philo[i]);
-   if(pthread_create(var.philo[i].thread, NULL, fn_philo, t))
+   if(pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
      return EXIT_FAILURE;
    pthread_detach(var.philo[i].thread);
    i++;
-   */
   }
   pthread_mutex_lock(&(var.lock_die));
   pthread_mutex_unlock(&(var.lock_die));
   i = 1;
   while (i < var.nb + 1)
   {
-    pthread_mutex_destroy(&(n[i].lock));
+    pthread_mutex_destroy(&(var.philo[i].lock));
     i++;
   }
   pthread_mutex_destroy(&(var.lock_std));

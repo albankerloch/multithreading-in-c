@@ -32,6 +32,8 @@ static int ft_create_philo(bin *var)
         var->philo[i].tt_sleep = var->time_to_sleep;
         var->philo[i].count_eat = 0;
         var->philo[i].nb_eat = var->nb_eat;
+        if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
+            return (1);
         i++;
     }
     return (0);
