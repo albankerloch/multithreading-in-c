@@ -54,7 +54,7 @@ void	*fn_philo(void *p_data)
 		if (n->count_eat == n->nb_eat)
 			while (1)
 			{
-				usleep(5000 * 1000)
+				usleep(5000 * 1000);
 			}
 		pthread_mutex_lock(n->lock_s);
 		ft_putlnbr_fd(current_timestamp(), 1);
