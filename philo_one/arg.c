@@ -5,9 +5,9 @@ int ft_arg(bin *var, int ac, char **av)
     if (ac > 6 || ac < 5)
         return (1);
     var->nb = ft_atoi(av[1]);
-    var->time_to_sleep = ft_atoi(av[2]);
-    var->time_to_die = ft_atoi(av[3]);
-    var->time_to_eat = ft_atoi(av[4]);
+    var->time_to_die = ft_atoi(av[2]);
+    var->time_to_eat = ft_atoi(av[3]);
+    var->time_to_sleep = ft_atoi(av[4]);
     var->nb_eat = ac == 6 ? ft_atoi(av[5]) : - 1;
     
     return (0);   
@@ -48,6 +48,7 @@ static int ft_create_philo(bin *var)
         var->philo[i].tt_sleep = var->time_to_sleep;
         var->philo[i].count_eat = 0;
         var->philo[i].nb_eat = var->nb_eat;
+        var->philo[i].fork_lock = 0;
         if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
             return (ft_clear_mutex(var, i));
         i++;

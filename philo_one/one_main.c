@@ -17,7 +17,7 @@ static void * fn_monitor (void * p_data)
   //ft_putlnbr_fd(n->start, 1);
   while (1)
   {
-    usleep(10);/*
+    usleep(10*1000);/*
     pthread_mutex_lock(n->lock_s);
     ft_putlnbr_fd(current_timestamp(), 1);
     write(1," ", 1);
@@ -65,36 +65,50 @@ static void * fn_philo (void * p_data)
 
   while (1)
   {
+
+    /*
     while (1)
     {
       if (pthread_mutex_lock(&(n->lock)) != 0)
       {
-        usleep(20);
+        //usleep(1000);
         continue;
       }
-      pthread_mutex_lock(n->lock_s);
-      ft_putlnbr_fd(current_timestamp(), 1);
-      write(1," ", 1);
-      ft_putnbr_fd(n->value, 1);
-      ft_putnbr_fd(n->value, 1);
-      write(1, " has taken a fork\n", 18);
-      pthread_mutex_unlock(n->lock_s);
       if (pthread_mutex_lock(&(n->next->lock)) != 0)
       {
         pthread_mutex_unlock(&(n->lock));
-        usleep(20);
+        //usleep(1000);
         continue;
       }
-      pthread_mutex_lock(n->lock_s);
-      ft_putlnbr_fd(current_timestamp(), 1);
-      write(1," ", 1);
-      ft_putnbr_fd(n->value, 1);
-      ft_putnbr_fd(n->next->value, 1);
-      write(1, " has taken a fork\n", 18);
-      pthread_mutex_unlock(n->lock_s);
       break;
     }
-    
+    */
+    while (!(n->fork_lock == 0 && n->next->fork_lock == 0))
+    {
+      usleep(10);
+    }
+
+    pthread_mutex_lock(&(n->lock));
+    n->fork_lock = 1;
+    pthread_mutex_lock(&(n->next->lock));
+    n->next->fork_lock = 1;
+
+    pthread_mutex_lock(n->lock_s);
+
+    ft_putlnbr_fd(current_timestamp(), 1);
+    write(1," ", 1);
+    ft_putnbr_fd(n->value, 1);
+    ft_putnbr_fd(n->value, 1);
+    write(1, " has taken a fork\n", 18);
+
+    ft_putlnbr_fd(current_timestamp(), 1);
+    write(1," ", 1);
+    ft_putnbr_fd(n->value, 1);
+    ft_putnbr_fd(n->next->value, 1);
+    write(1, " has taken a fork\n", 18);
+
+    pthread_mutex_unlock(n->lock_s);
+
     n->start = current_timestamp();
     n->count_eat = n->count_eat + 1;
 
@@ -108,9 +122,11 @@ static void * fn_philo (void * p_data)
 
     pthread_mutex_unlock(n->lock_s);
 
-    usleep(n->tt_eat);
+    usleep(n->tt_eat*1000);
 
+    n->next->fork_lock = 0;
     pthread_mutex_unlock(&(n->next->lock));
+    n->fork_lock = 0;
     pthread_mutex_unlock(&(n->lock));
 
     if (n->count_eat == n->nb_eat)
@@ -128,7 +144,7 @@ static void * fn_philo (void * p_data)
 
     pthread_mutex_unlock(n->lock_s);
 
-    usleep(n->tt_sleep);
+    usleep(n->tt_sleep*1000);
 
     pthread_mutex_lock(n->lock_s);
 

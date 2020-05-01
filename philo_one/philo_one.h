@@ -22,6 +22,7 @@ typedef struct s_node
     int  nb_eat;
     pthread_t thread;
     pthread_t monitor_die;
+    int fork_lock;
     struct s_node *next;
 } node;
 
