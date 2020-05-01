@@ -8,6 +8,15 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+typedef struct s_bin
+{
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int nb_eat;
+    int nb;
+} bin;
+
 typedef struct s_node
 {
     int value;
@@ -31,5 +40,6 @@ void				ft_putlnbr_fd(long long n, int fd);
 void				ft_putnbr_fd(int n, int fd);
 int				ft_isdigit(int i);
 int				ft_atoi(const char *str);
+int ft_arg(bin *var, int ac, char **av);
 
 #endif

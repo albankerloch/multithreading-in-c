@@ -149,21 +149,14 @@ int main (int ac, char **av)
   pthread_mutex_t lock[3];
   pthread_mutex_t lock_std;
   pthread_mutex_t lock_die;
-  int time_to_die;
-  int time_to_eat;
-  int time_to_sleep;
   int i;
-  int nb_eat;
   node n[3];
   void *t;
+  bin var;
   
-  (void)ac;
-  (void)av;
-  time_to_die = 1000;
-  time_to_eat = 500000;
-  time_to_sleep = 1000000;
-  nb_eat = 4;
-
+  ft_arg(&var, ac, av);
+  (void)var.nb;
+  ft_putnbr_fd(var.time_to_die,1);
   n[1].next = &n[2];
   n[2].next = &n[1];
 
@@ -185,11 +178,11 @@ int main (int ac, char **av)
    n[i].lock = &lock[i];
    n[i].lock_s = &lock_std;
    n[i].lock_die = &lock_die;
-   n[i].tt_die = time_to_die;
-   n[i].tt_eat = time_to_eat;
-   n[i].tt_sleep = time_to_sleep;
+   n[i].tt_die = var.time_to_die;
+   n[i].tt_eat = var.time_to_eat;
+   n[i].tt_sleep = var.time_to_sleep;
    n[i].count_eat = 0;
-   n[i].nb_eat = nb_eat;
+   n[i].nb_eat = var.nb_eat;
    n[i].monitor_die = &thread_die[i];
    n[i].thread = &thread_philo[i];
    if(pthread_create(&thread_philo[i], NULL, fn_philo, t))
