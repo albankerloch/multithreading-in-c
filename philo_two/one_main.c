@@ -38,7 +38,13 @@ void		*fn_monitor_eat(void *p_data)
 		}
 		if (nb_eat_total == n->nb * n->nb_eat)
 		{
-			pthread_mutex_unlock(n->lock_die);
+			sem_post(n->sem_die);
+			write(1, "\nP\n", 3);
+			sem_wait(n->sem_die2);
+			write(1, "\nL\n", 3);
+			sem_wait(n->sem_die);
+			write(1, "\nS\n", 3);
+			//pthread_mutex_unlock(n->lock_die);
 			return (0);
 		}
 	}
