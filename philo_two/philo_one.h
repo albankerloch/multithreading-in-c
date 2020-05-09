@@ -63,4 +63,5 @@ long long		current_timestamp(void);
 void            print_value(sem_t *sem_die, int *val);
 void			ft_putlnbr_str(long long a,  node *n);
 void		    ft_putnbr_str(int a, node *n);
+void		ft_message(node *n, char *str, long long tm, unsigned int j);
 #endif

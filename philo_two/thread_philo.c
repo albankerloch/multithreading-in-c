@@ -17,20 +17,13 @@ void		ft_message(node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	pthread_mutex_lock(n->lock_s);
-	//ft_putlnbr_fd(tm, 1);
 	ft_putlnbr_str(tm, n);
 	n->str[13] = ' ';
 	ft_putnbr_str(n->value, n);
-	//ft_putnbr_fd(n->value, 1);
 	t = ft_strlen(n->str);
-	//ft_putnbr_fd(t, 1);
 	n->str[t] = ' ';
 	ft_chg_str(n, str, t, j);
 	write(1, n->str, ft_strlen(n->str));
-	//n->str[0] = '\0';
-	//write(1, str, ft_strlen(str));
-	pthread_mutex_unlock(n->lock_s);
 }
 
 static void	ft_activity(node *n)
