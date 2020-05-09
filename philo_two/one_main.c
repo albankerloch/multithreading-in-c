@@ -48,7 +48,7 @@ void		*fn_monitor(void *p_data)
 		if (current_timestamp() - n->start > n->tt_die && \
 n->count_eat != n->nb_eat)
 		{
-			ft_message(n, " died\n", n->start, 5);
+			ft_message(n, " died\n", current_timestamp(), 5);
 			sem_post(n->sem_die);
 			break;
 		}
