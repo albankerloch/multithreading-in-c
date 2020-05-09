@@ -51,6 +51,7 @@ static int	ft_create_philo(bin *var)
 		var->philo[i].nb = var->nb;
 		var->philo[i].sem_die = var->sem_die;
 		var->philo[i].sem_die2 = var->sem_die2;
+		var->philo[i].str[0] = '\0';
 		//printf("\nCREA PHILO->%p\n", var->philo[i].sem_die);
 		//printf("\nCREA VAR->%p\n", var->sem_die);
 		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)

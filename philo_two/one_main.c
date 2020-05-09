@@ -3,9 +3,9 @@
 void print_value(sem_t *sem_die, int *val)
 {
 	sem_getvalue(sem_die, val);
-	write(1, "\n", 1);
-	ft_putnbr_fd(*val, 1);
-	write(1, "\n", 1);
+	//write(1, "\n", 1);
+	//ft_putnbr_fd(*val, 1);
+	//write(1, "\n", 1);
 }
 
 long long	current_timestamp(void)
@@ -68,8 +68,8 @@ n->count_eat != n->nb_eat)
 			pthread_mutex_lock(n->lock_s);
 			ft_putlnbr_fd(current_timestamp(), 1);
 			write(1, " ", 1);
-			ft_putlnbr_fd(n->start, 1);
-			write(1, " ", 1);
+			//ft_putlnbr_fd(n->start, 1);
+			//write(1, " ", 1);
 			ft_putnbr_fd(n->value, 1);
 			write(1, " has died\n", 10);
 			//pthread_mutex_unlock(n->lock_s);
@@ -116,7 +116,7 @@ int			main(int ac, char **av)
 	str2[1] = '\0';
 	sem_unlink(str2);
 	var.sem_die2 = sem_open(str2, O_CREAT | O_EXCL, 0664, 1);
-	printf("\n->%p\n", var.sem_die2);
+	//printf("\n->%p\n", var.sem_die2);
 	print_value(var.sem_die, &val);
 	sem_wait(var.sem_die);
 	sem_wait(var.sem_die2);
@@ -139,7 +139,7 @@ int			main(int ac, char **av)
 	pthread_detach(var.philo[i].thread);
 	//pthread_mutex_lock(&(var.lock_die));
 	//pthread_mutex_unlock(&(var.lock_die));
-	write(1, "\nV\n", 3);
+	//write(1, "\nV\n", 3);
 	print_value(var.sem_die, &val);
 	sem_wait(var.sem_die);
 	print_value(var.sem_die, &val);
@@ -150,7 +150,7 @@ int			main(int ac, char **av)
 		usleep(5000);
 		print_value(var.sem_die, &val);
 	}*/
-	write(1, "\n\nX\n\n", 5);
+	//write(1, "\n\nX\n\n", 5);
 	//sem_post(var.sem_die);
 	return (ft_clear_mutex(&var, var.nb));
 }

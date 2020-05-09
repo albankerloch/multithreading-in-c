@@ -30,6 +30,7 @@ typedef struct s_node
     int nb;
     sem_t *sem_die;
     sem_t *sem_die2;
+    char str[50];
 } node;
 
 typedef struct s_bin
@@ -59,6 +60,7 @@ void			*fn_philo(void *p_data);
 void			*fn_monitor_eat(void *p_data);
 void			*fn_monitor(void *p_data);
 long long		current_timestamp(void);
-void print_value(sem_t *sem_die, int *val);
-
+void            print_value(sem_t *sem_die, int *val);
+void			ft_putlnbr_str(long long a,  node *n);
+void		    ft_putnbr_str(int a, node *n);
 #endif
