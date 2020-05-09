@@ -16,8 +16,6 @@ struct s_bin;
 typedef struct s_node
 {
     int value;
-    pthread_mutex_t *lock_s;
-    pthread_mutex_t lock;
     pthread_mutex_t *lock_die;
     int  tt_die;
     int  tt_eat;
@@ -42,8 +40,6 @@ typedef struct s_bin
     int time_to_sleep;
     int nb_eat;
     int nb;
-    pthread_mutex_t lock_std;
-    pthread_mutex_t lock_die;
     node *philo;
     sem_t *sem_die;
     sem_t *sem_fork;
@@ -59,7 +55,7 @@ int				ft_isdigit(int i);
 int				ft_atoi(const char *str);
 int             ft_arg(bin *var, int ac, char **av);
 int             ft_create(bin *var);
-int             ft_clear_mutex(bin *var, int i);
+int             ft_clear(bin *var, int i);
 void			*fn_philo(void *p_data);
 void			*fn_monitor_eat(void *p_data);
 void			*fn_monitor(void *p_data);
@@ -67,5 +63,5 @@ long long		current_timestamp(void);
 void            print_value(sem_t *sem_die, int *val);
 void			ft_putlnbr_str(long long a,  node *n);
 void		    ft_putnbr_str(int a, node *n);
-void		ft_message(node *n, char *str, long long tm, unsigned int j);
+void		    ft_message(node *n, char *str, long long tm, unsigned int j);
 #endif

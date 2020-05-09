@@ -1,4 +1,5 @@
 #include "philo_one.h"
+
 void		ft_chg_str(node *n, char *str, unsigned int t, unsigned int j)
 {
 	unsigned int i;
