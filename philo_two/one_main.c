@@ -48,7 +48,7 @@ void		*fn_monitor(void *p_data)
 		if (current_timestamp() - n->start > n->tt_die && \
 n->count_eat != n->nb_eat)
 		{
-			ft_message(n, " died\n", current_timestamp(), 5);
+			ft_message(n, " died\n", n->start, 5);
 			sem_post(n->sem_die);
 			break;
 		}
@@ -61,15 +61,18 @@ int			main(int ac, char **av)
 	int		i;
 	bin		var;
 	void	*t;
-	char	*str;
 
 	if (ft_arg(&var, ac, av))
 		return (1);
-	str = malloc(sizeof(char) * 3);
-	str[0] = 'd';
-	str[1] = '\0';
-	sem_unlink(str);
-	var.sem_die = sem_open(str, O_CREAT | O_EXCL, 0664, 1);
+
+	var.str_fork[0] = 'f';
+	var.str_fork[1] = '\0';
+	sem_unlink(var.str_fork);
+	var.sem_fork = sem_open(var.str_fork, O_CREAT | O_EXCL, 0664, var.nb);
+	var.str_die[0] = 'd';
+	var.str_die[1] = '\0';
+	sem_unlink(var.str_die);
+	var.sem_die = sem_open(var.str_die, O_CREAT | O_EXCL, 0664, 1);
 	sem_wait(var.sem_die);
 	if (ft_create(&var))
 		return (1);

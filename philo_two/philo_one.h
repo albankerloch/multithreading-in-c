@@ -11,6 +11,8 @@
 # include <fcntl.h> 
 # include <sys/stat.h>
 
+struct s_bin;
+
 typedef struct s_node
 {
     int value;
@@ -29,8 +31,8 @@ typedef struct s_node
     struct s_node *next;
     int nb;
     sem_t *sem_die;
-    sem_t *sem_die2;
     char str[50];
+    struct s_bin *var;
 } node;
 
 typedef struct s_bin
@@ -44,7 +46,9 @@ typedef struct s_bin
     pthread_mutex_t lock_die;
     node *philo;
     sem_t *sem_die;
-    sem_t *sem_die2;
+    sem_t *sem_fork;
+    char str_die[2];
+    char str_fork[2];
 } bin;
 
 size_t			ft_strlen(const char *str);
