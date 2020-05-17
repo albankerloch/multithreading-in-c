@@ -11,12 +11,12 @@ int			ft_arg(bin *var, int ac, char **av)
 	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
 	return (0);
 }
-
+/*
 int			ft_clear(bin *var, int i)
 {
 	i = 1;
 	i++;
-	free(var->philo);
+	//free(var->philo);
 	return (0);
 }
 
@@ -55,3 +55,4 @@ int			ft_create(bin *var)
 		return (1);
 	return (0);
 }
+*/

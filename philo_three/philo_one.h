@@ -14,40 +14,6 @@
 #include <sys/wait.h>
 
 
-struct s_bin;
-
-typedef struct s_node
-{
-    int value;
-    int  tt_die;
-    int  tt_eat;
-    int  tt_sleep;
-    long long start;
-    int  count_eat;
-    int  nb_eat;
-    int fork_lock;
-    struct s_node *next;
-    int nb;
-    sem_t *sem_die;
-    char str[50];
-    struct s_bin *var;
-} node;
-
-typedef struct s_test
-{
-    int value;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int nb_eat;
-    int nb;
-    //sem_t *sem_die;
-    //sem_t *sem_fork;
-    //char str_die[2];
-    //char str_fork[2];
-} test;
-
-
 typedef struct s_bin
 {
     int time_to_die;
@@ -55,11 +21,7 @@ typedef struct s_bin
     int time_to_sleep;
     int nb_eat;
     int nb;
-    node *philo;
-    sem_t *sem_die;
-    sem_t *sem_fork;
-    char str_die[2];
-    char str_fork[2];
+    int count_eat;
 } bin;
 
 size_t			ft_strlen(const char *str);
@@ -76,7 +38,9 @@ void			*fn_monitor_eat(void *p_data);
 void			*fn_monitor(void *p_data);
 long long		current_timestamp(void);
 void            print_value(sem_t *sem_die, int *val);
-void			ft_putlnbr_str(long long a,  node *n);
-void		    ft_putnbr_str(int a, node *n);
-void		    ft_message(node *n, char *str, long long tm, unsigned int j);
+void			ft_putlnbr_str(long long a, char str[50]);
+void		    ft_putnbr_str(int a, char str[50]);
+void		    ft_message(int i, char *str_txt, long long tm, unsigned int j, char str[50]);
+void	        ft_activity(int i, char str[50], long long *start, bin *var, sem_t *sem_fork);
+
 #endif

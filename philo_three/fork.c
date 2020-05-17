@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-#include <sys/types.h>
-#include <sys/wait.h>
 #include "philo_one.h"
 
 int main() {
@@ -22,6 +16,8 @@ int main() {
   while (i < 5 && forkStatus != 0 && forkStatus != -1)
   {
     forkStatus = fork();
+    if (forkStatus == 0)
+      printf("Child is created.\n");
     i++;
   }
 

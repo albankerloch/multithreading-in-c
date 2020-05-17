@@ -27,7 +27,7 @@ static int	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void	ft_rec(int a, int p, node *n, int t)
+static void	ft_rec(int a, int p, char str[50], int t)
 {
 	char	c;
 	int		i;
@@ -35,15 +35,15 @@ static void	ft_rec(int a, int p, node *n, int t)
 
 	i = ft_puiss_dix(p);
 	c = a / i + 48;
-	n->str[t] = c;
+	str[t] = c;
 	if (p != 0)
 	{
 		b = a % i;
-		ft_rec(b, p - 1, n, t + 1);
+		ft_rec(b, p - 1, str, t + 1);
 	}
 }
 
-void		ft_putnbr_str(int a, node *n)
+void		ft_putnbr_str(int a, char str[50])
 {
 	int p;
 	int b;
@@ -55,6 +55,6 @@ void		ft_putnbr_str(int a, node *n)
 		b = b / 10;
 		p++;
 	}
-	ft_rec(a, p, n, 14);
-	n->str[p + 15] = '\0';
+	ft_rec(a, p, str, 14);
+	str[p + 15] = '\0';
 }
