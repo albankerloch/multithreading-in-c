@@ -10,36 +10,10 @@ long long	current_timestamp(void)
 	return (m);
 }
 
-void		*fn_monitor_eat(void *p_data)
-{
-	node	*n;
-	int		nb_eat_total;
-	int		i;
-
-	n = p_data;
-	while (1)
-	{
-		usleep(10 * 1000);
-		nb_eat_total = 0;
-		i = 1;
-		while (i < n->nb + 1)
-		{
-			nb_eat_total = nb_eat_total + n->count_eat;
-			n = n->next;
-			i++;
-		}
-		if (nb_eat_total == n->nb * n->nb_eat)
-		{
-			sem_post(n->sem_die);
-			return (0);
-		}
-	}
-	return (0);
-}
-
 void		*fn_monitor(void *p_data)
 {
 	node *n;
+	int i;
 
 	n = p_data;
 	while (1)
@@ -49,15 +23,19 @@ void		*fn_monitor(void *p_data)
 n->count_eat != n->nb_eat)
 		{
 			ft_message(n, " died\n", n->start, 5);
-			sem_post(n->sem_die);
+			i = 1;
+			while (i < n->var->nb + 1)
+			{
+				sem_post(n->sem_die);
+				i++;
+			}
 			break;
 		}
 	}
 	return (0);
 }
 
-static int
-	routine(node *n)
+static int 	routine(node *n)
 {
 	void *p;
 
@@ -80,7 +58,6 @@ int			main(int ac, char **av)
 {
 	int		i;
 	bin		var;
-//	void	*t;
 
 	if (ft_arg(&var, ac, av))
 		return (1);
@@ -93,7 +70,6 @@ int			main(int ac, char **av)
 	var.str_die[1] = '\0';
 	sem_unlink(var.str_die);
 	var.sem_die = sem_open(var.str_die, O_CREAT | O_EXCL, 0664, 1);
-	sem_wait(var.sem_die);
 
 	if (ft_create(&var))
 		return (1);
@@ -113,7 +89,12 @@ int			main(int ac, char **av)
 		printf("[%d] [%d] hi i=%d fork=%d\n", getppid(), getpid(), i, var.philo[i].pid);
 		i++;
 	}
-	sem_wait(var.sem_die);
+	i = 1;
+	while (i < var.nb + 1)
+	{
+		sem_wait(var.sem_die);
+		i++;
+	}
 	i = 1;
 	while (i < var.nb + 1)
 		kill(var.philo[i++].pid, SIGKILL);

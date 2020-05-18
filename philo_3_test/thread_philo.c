@@ -38,30 +38,11 @@ void	ft_activity(node *n)
 	sem_post(n->var->sem_fork);
 	sem_post(n->var->sem_fork);
 	if (n->count_eat == n->nb_eat)
-		while (1)
-		{
-			usleep(5000 * 1000);
-		}
+	{
+		sem_post(n->sem_die);
+		exit(1);
+	}
 	ft_message(n, " is sleeping\n", current_timestamp(), 12);
 	usleep(n->tt_sleep * 1000);
 	ft_message(n, " is thinking\n", current_timestamp(), 12);
-}
-
-void		*fn_philo(void *p_data)
-{
-	node *n;
-
-	n = p_data;
-	n->start = current_timestamp();
-	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p_data))
-		return (0);
-	pthread_detach(n->monitor_die);
-	ft_message(n, " is thinking\n", n->start, 12);
-	while (1)
-	{
-		sem_wait(n->var->sem_fork);
-		sem_wait(n->var->sem_fork);
-		ft_activity(n);
-	}
-	return (0);
 }
