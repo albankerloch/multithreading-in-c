@@ -80,12 +80,13 @@ int			main(int ac, char **av)
 		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
 			return (ft_clear_mutex(&var, var.nb));
 		pthread_detach(var.philo[i].thread);
+		usleep(100);
 		i++;
 	}
 	t = &(var.philo[1]);
-	/*if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
+	if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
 		return (ft_clear_mutex(&var, var.nb));
-	pthread_detach(var.philo[i].thread);*/
+	pthread_detach(var.philo[i].thread);
 	pthread_mutex_lock(&(var.lock_die));
 	pthread_mutex_unlock(&(var.lock_die));
 	return (ft_clear_mutex(&var, var.nb));

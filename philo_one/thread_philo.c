@@ -14,9 +14,9 @@ static void	ft_activity(node *n)
 {
 	pthread_mutex_lock(&(n->lock));
 	n->fork_lock = 1;
+	ft_message(n, " has taken a fork\n", current_timestamp());
 	pthread_mutex_lock(&(n->next->lock));
 	n->next->fork_lock = 1;
-	ft_message(n, " has taken a fork\n", current_timestamp());
 	ft_message(n, " has taken a fork\n", current_timestamp());
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
@@ -47,12 +47,6 @@ void		*fn_philo(void *p_data)
 	pthread_detach(n->monitor_die);
 	ft_message(n, " is thinking\n", n->start);
 	while (1)
-	{
-		while (!(n->fork_lock == 0 && n->next->fork_lock == 0))
-		{
-			usleep(10);
-		}
 		ft_activity(n);
-	}
 	return (0);
 }
