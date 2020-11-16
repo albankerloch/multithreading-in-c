@@ -62,6 +62,7 @@ void		*fn_philo(void *p_data)
 	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p_data))
 		return (0);
 	pthread_detach(n->monitor_die);
+	pthread_mutex_unlock(n->lock_c);
 	ft_message(n, " is thinking\n", n->start);
 	while (1)
 		ft_activity(n);
