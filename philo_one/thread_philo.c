@@ -2,29 +2,44 @@
 
 void		ft_message(node *n, char *str, long long tm)
 {
+	int i;
+	int k;
+	int b;
+
 	pthread_mutex_lock(n->lock_s);
-	ft_putlnbr_fd(tm, 1);
-	write(1, " ", 1);
-	ft_putnbr_fd(n->value, 1);
-	write(1, str, ft_strlen(str));
+	ft_putlnbr_mess(n, tm, 12);
+	n->mess[13] = ' ';
+	b = n->value;
+	k = 0;
+	while ((b % 10) != b)
+	{
+		b = b / 10;
+		k++;
+	}
+	b = n->value;
+	ft_putlnbr_mess(n, n->value, 14 + k);
+	i = 0;
+	while (str[i])
+	{
+		n->mess[i + 15 + k] = str[i] ;
+		i++;
+	}
+	n->mess[i + 15 + k] = '\0';
+	write(1, n->mess, ft_strlen(n->mess));
 	pthread_mutex_unlock(n->lock_s);
 }
 
 static void	ft_activity(node *n)
 {
 	pthread_mutex_lock(&(n->lock));
-	n->fork_lock = 1;
 	ft_message(n, " has taken a fork\n", current_timestamp());
 	pthread_mutex_lock(&(n->next->lock));
-	n->next->fork_lock = 1;
 	ft_message(n, " has taken a fork\n", current_timestamp());
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
 	ft_message(n, " is eating\n", n->start);
 	usleep(n->tt_eat * 1000);
-	n->next->fork_lock = 0;
 	pthread_mutex_unlock(&(n->next->lock));
-	n->fork_lock = 0;
 	pthread_mutex_unlock(&(n->lock));
 	if (n->count_eat == n->nb_eat)
 		while (1)

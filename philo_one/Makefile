@@ -15,6 +15,7 @@ SRCS =	one_main.c \
 	thread_philo.c \
 	ft_atoi.c \
 	ft_putlnbr_fd.c \
+	ft_putlnbr_mess.c \
 	ft_putnbr_fd.c \
 	ft_putstr_fd.c \
 	ft_strlen.c \

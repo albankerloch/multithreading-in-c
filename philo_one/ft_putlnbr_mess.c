@@ -12,9 +12,9 @@
 
 #include "philo_one.h"
 
-static int	ft_puiss_dix(int n)
+static long long	ft_puiss_dix(int n)
 {
-	int result;
+	long long result;
 
 	if (n == 0)
 	{
@@ -27,33 +27,33 @@ static int	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void	ft_rec(int a, int n, int fd)
+static void			ft_rec(node *n, long long a, int k, int t)
 {
-	char	c;
-	int		i;
-	int		b;
+	char		c;
+	long long	i;
+	long long	b;
 
-	i = ft_puiss_dix(n);
+	i = ft_puiss_dix(k);
 	c = a / i + 48;
-	write(fd, &c, 1);
-	if (n != 0)
+	n->mess[t - k] =  c;
+	if (k != 0)
 	{
 		b = a % i;
-		ft_rec(b, n - 1, fd);
+		ft_rec(n, b, k - 1, t);
 	}
 }
 
-void		ft_putnbr_fd(int a, int fd)
+void				ft_putlnbr_mess(node *n, long long a, int t)
 {
-	int n;
-	int b;
+	int			k;
+	long long	b;
 
 	b = a;
-	n = 0;
+	k = 0;
 	while ((b % 10) != b)
 	{
 		b = b / 10;
-		n++;
+		k++;
 	}
-	ft_rec(a, n, fd);
+	ft_rec(n, a, k, t);
 }

@@ -22,8 +22,8 @@ typedef struct s_node
     int  nb_eat;
     pthread_t thread;
     pthread_t monitor_die;
-    int fork_lock;
     struct s_node *next;
+    char mess[50];
     int nb;
 } node;
 
@@ -43,6 +43,8 @@ size_t			ft_strlen(const char *str);
 void			ft_putstr_fd(char *s, int fd);
 void			ft_putlnbr_fd(long long n, int fd);
 void			ft_putnbr_fd(int n, int fd);
+void			ft_putnbr_mess(node *n, int a, int t);
+void			ft_putlnbr_mess(node *n, long long a, int t);
 int				ft_isdigit(int i);
 int				ft_atoi(const char *str);
 int             ft_arg(bin *var, int ac, char **av);
