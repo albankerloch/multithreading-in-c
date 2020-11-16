@@ -42,6 +42,7 @@ void		*fn_monitor(void *p_data)
 	node *n;
 
 	n = p_data;
+	pthread_mutex_unlock(n->lock_c);
 	while (1)
 	{
 		usleep(10 * 000);
@@ -77,10 +78,13 @@ int			main(int ac, char **av)
 	while (i < var.nb + 1)
 	{
 		t = &(var.philo[i]);
+		pthread_mutex_lock(&(var.lock_crea));
 		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
 			return (ft_clear_mutex(&var, var.nb));
 		pthread_detach(var.philo[i].thread);
-		usleep(100);
+		pthread_mutex_lock(&(var.lock_crea));
+		pthread_mutex_unlock(&(var.lock_crea));
+		//usleep(100);
 		i++;
 	}
 	t = &(var.philo[1]);

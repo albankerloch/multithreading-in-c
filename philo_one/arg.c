@@ -41,6 +41,7 @@ static int	ft_create_philo(bin *var)
 			var->philo[i].next = &(var->philo[i + 1]);
 		var->philo[i].value = i;
 		var->philo[i].lock_s = &(var->lock_std);
+		var->philo[i].lock_c = &(var->lock_crea);
 		var->philo[i].lock_die = &(var->lock_die);
 		var->philo[i].tt_die = var->time_to_die;
 		var->philo[i].tt_eat = var->time_to_eat;
@@ -58,6 +59,8 @@ static int	ft_create_philo(bin *var)
 int			ft_create(bin *var)
 {
 	if (pthread_mutex_init(&(var->lock_std), NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&(var->lock_crea), NULL) != 0)
 		return (1);
 	if (pthread_mutex_init(&(var->lock_die), NULL) != 0)
 	{

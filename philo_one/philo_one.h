@@ -12,6 +12,7 @@ typedef struct s_node
 {
     int value;
     pthread_mutex_t *lock_s;
+    pthread_mutex_t *lock_c;
     pthread_mutex_t lock;
     pthread_mutex_t *lock_die;
     int  tt_die;
@@ -35,6 +36,7 @@ typedef struct s_bin
     int nb_eat;
     int nb;
     pthread_mutex_t lock_std;
+    pthread_mutex_t lock_crea;
     pthread_mutex_t lock_die;
     node *philo;
 } bin;
