@@ -42,10 +42,12 @@ static void	ft_activity(node *n)
 	pthread_mutex_unlock(&(n->next->lock));
 	pthread_mutex_unlock(&(n->lock));
 	if (n->count_eat == n->nb_eat)
+	{
 		while (1)
 		{
 			usleep(5000 * 1000);
 		}
+	}
 	ft_message(n, " is sleeping\n", current_timestamp());
 	usleep(n->tt_sleep * 1000);
 	ft_message(n, " is thinking\n", current_timestamp());

@@ -45,7 +45,7 @@ void		*fn_monitor(void *p_data)
 	pthread_mutex_unlock(n->lock_c);
 	while (1)
 	{
-		usleep(10 * 000);
+		usleep(10);
 		if (current_timestamp() - n->start > n->tt_die && \
 n->count_eat != n->nb_eat)
 		{
