@@ -26,7 +26,7 @@ int			ft_clear_mutex(bin *var, int i)
 	pthread_mutex_destroy(&(var->lock_crea));
 	pthread_mutex_destroy(&(var->lock_std));
 	free(var->philo);
-	return (0);
+	return (1);
 }
 
 static int	ft_create_philo(bin *var)
@@ -51,7 +51,7 @@ static int	ft_create_philo(bin *var)
 		var->philo[i].nb_eat = var->nb_eat;
 		var->philo[i].nb = var->nb;
 		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
-			return (ft_clear_mutex(var, i));
+			return ((!(ft_clear_mutex(var, i))));
 		i++;
 	}
 	return (1);

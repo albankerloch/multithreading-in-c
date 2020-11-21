@@ -19,7 +19,6 @@ int	ft_check_arg(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-//		printf("ac=%d i=%d arg=|%s| strisdigit=%d\n", ac, i, av[i], ft_strisdigit(av[i]));
 		if (!(ft_strisdigit(av[i])))
 			return (0);
 		i++;
