@@ -10,85 +10,70 @@ long long	current_timestamp(void)
 	return (m);
 }
 
-void		*fn_monitor_eat(void *p_data)
-{
-	node	*n;
-	int		nb_eat_total;
-	int		i;
-
-	n = p_data;
-	while (1)
-	{
-		usleep(10 * 1000);
-		nb_eat_total = 0;
-		i = 1;
-		while (i < n->nb + 1)
-		{
-			nb_eat_total = nb_eat_total + n->count_eat;
-			n = n->next;
-			i++;
-		}
-		if (nb_eat_total == n->nb * n->nb_eat)
-		{
-			sem_post(n->sem_die);
-			return (0);
-		}
-	}
-	return (0);
-}
-
-void		*fn_monitor(void *p_data)
-{
-	node *n;
-
-	n = p_data;
-	while (1)
-	{
-		usleep(10 * 000);
-		if (current_timestamp() - n->start > n->tt_die && \
-n->count_eat != n->nb_eat)
-		{
-			ft_message(n, " died\n", n->start, 5);
-			sem_post(n->sem_die);
-			break;
-		}
-	}
-	return (0);
-}
-
 int			main(int ac, char **av)
 {
-	int		i;
-	bin		var;
-	void	*t;
+	pid_t forkStatus;
+	char str_die[2];
+	char str_fork[2];
+	char str[50];
+	sem_t *sem_die;
+	sem_t *sem_fork;
+	int i;
+	bin var;
+	long long start;
 
 	if (ft_arg(&var, ac, av))
 		return (1);
+	(void)str;
 
-	var.str_fork[0] = 'f';
-	var.str_fork[1] = '\0';
-	sem_unlink(var.str_fork);
-	var.sem_fork = sem_open(var.str_fork, O_CREAT | O_EXCL, 0664, var.nb);
-	var.str_die[0] = 'd';
-	var.str_die[1] = '\0';
-	sem_unlink(var.str_die);
-	var.sem_die = sem_open(var.str_die, O_CREAT | O_EXCL, 0664, 1);
-	sem_wait(var.sem_die);
-	if (ft_create(&var))
-		return (1);
-	i = 1;
-	while (i < var.nb + 1)
+	str_fork[0] = 'f';
+	str_fork[1] = '\0';
+	sem_unlink(str_fork);
+	sem_fork = sem_open(str_fork, O_CREAT | O_EXCL, 0664, var.nb);
+	str_die[0] = 'd';
+	str_die[1] = '\0';
+	sem_unlink(str_die);
+	sem_die = sem_open(str_die, O_CREAT | O_EXCL, 0664, 1);
+	sem_wait(sem_die);
+
+	i = 0;
+	while (i < var.nb && forkStatus != 0 && forkStatus != -1)
 	{
-		t = &(var.philo[i]);
-		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
-			return (ft_clear(&var, var.nb));
-		pthread_detach(var.philo[i].thread);
+		forkStatus = fork();
 		i++;
 	}
-	t = &(var.philo[1]);
-	if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
-		return (ft_clear(&var, var.nb));
-	pthread_detach(var.philo[i].thread);
-	sem_wait(var.sem_die);
-	return (ft_clear(&var, var.nb));
+
+	/* Child... */
+	if (forkStatus == 0)
+	{
+		printf("[%d] [%d] hi i=%d fork=%d\n", getppid(), getpid(), i, forkStatus);
+		start = current_timestamp();
+		(void)sem_fork;
+		var.count_eat = 0;
+		ft_message(i, " is thinking\n", start, 12, str);
+		while (1)
+		{
+			sem_wait(sem_fork);
+			sem_wait(sem_fork);
+			ft_activity(i, str, &start, &var, sem_fork);
+		}
+		printf("Child is done, exiting.\n");
+		sem_post(sem_die);
+		/* Parent... */
+	}
+	else if (forkStatus != -1)
+	{
+		printf("Parent is waiting...\n");
+		sem_wait(sem_die);
+		//wait(NULL);
+
+		printf("Parent is exiting...\n");
+
+	}
+	else
+	{
+		perror("Error while calling the fork function");
+	}
+
+	return 0;
 }
