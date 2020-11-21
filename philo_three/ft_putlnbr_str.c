@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 static long long	ft_puiss_dix(int n)
 {
@@ -27,7 +27,7 @@ static long long	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void			ft_rec(long long a, int p, char str[50], int t)
+static void			ft_rec(long long a, int p, node *n, int t)
 {
 	char		c;
 	long long	i;
@@ -35,15 +35,15 @@ static void			ft_rec(long long a, int p, char str[50], int t)
 
 	i = ft_puiss_dix(p);
 	c = a / i + 48;
-	str[t] = c;
+	n->str[t] = c;
 	if (p != 0)
 	{
 		b = a % i;
-		ft_rec(b, p - 1, str, t + 1);
+		ft_rec(b, p - 1, n, t + 1);
 	}
 }
 
-void				ft_putlnbr_str(long long a, char str[50])
+void				ft_putlnbr_str(long long a, node *n)
 {
 	int			p;
 	long long	b;
@@ -55,6 +55,6 @@ void				ft_putlnbr_str(long long a, char str[50])
 		b = b / 10;
 		p++;
 	}
-	ft_rec(a, p, str, 0);
-	str[p + 1] = '\0';
+	ft_rec(a, p, n, 0);
+	n->str[p + 1] = '\0';
 }

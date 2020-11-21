@@ -1,71 +1,60 @@
-#include "philo_one.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/08 19:55:49 by akerloc-          #+#    #+#             */
+/*   Updated: 2019/10/07 16:39:58 by akerloc-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void		ft_chg_str( char *str_txt, unsigned int t, unsigned int j, char str[50])
+#include "philo_three.h"
+
+void		ft_chg_str(node *n, char *str, unsigned int t, unsigned int j)
 {
 	unsigned int i;
 	
 	i = 0;
 	while (i < j)
 	{
-		str[i + t] = str_txt[i];
+		n->str[i + t] = str[i];
 		i++;
 	}
-	str[i + t ] = '\n';
-	str[i + t + 1] = '\0';
+	n->str[i + t ] = '\n';
+	n->str[i + t + 1] = '\0';
 }
 
-
-void		ft_message(int i, char *str_txt, long long tm, unsigned int j, char str[50])
+void		ft_message(node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	ft_putlnbr_str(tm, str);
-	str[13] = '\0';
-	str[13] = ' ';
-	ft_putnbr_str(i, str);
-	t = ft_strlen(str);
-	str[t] = ' ';
-	ft_chg_str(str_txt, t, j, str);
-	write(1, str, ft_strlen(str));
+	ft_putlnbr_str(tm, n);
+	n->str[13] = ' ';
+	ft_putnbr_str(n->value, n);
+	t = ft_strlen(n->str);
+	n->str[t] = ' ';
+	ft_chg_str(n, str, t, j);
+	write(1, n->str, ft_strlen(n->str));
 }
 
-
-void	ft_activity(int i, char str[50], long long *start, bin *var, sem_t *sem_fork)
+void	ft_activity(node *n)
 {
-	ft_message(i, " has taken a fork\n", current_timestamp(), 17, str);
-	ft_message(i, " has taken a fork\n", current_timestamp(), 17, str);
-	*start = current_timestamp();
-	var->count_eat = var->count_eat + 1;
-	ft_message(i, " is eating\n", *start, 10, str);
-	usleep(var->time_to_eat * 1000);
-	sem_post(sem_fork);
-	sem_post(sem_fork);
-	if (var->count_eat == var->nb_eat)
-		while (1)
-		{
-			usleep(5000 * 1000);
-		}
-	ft_message(i, " is sleeping\n", current_timestamp(), 12, str);
-	usleep(var->time_to_sleep * 1000);
-	ft_message(i, " is thinking\n", current_timestamp(), 12, str);
-}
-/*
-void		*fn_philo(void *p_data)
-{
-	node *n;
-
-	n = p_data;
+	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
+	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	n->start = current_timestamp();
-	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p_data))
-		return (0);
-	ft_message(n, " is thinking\n", n->start, 12);
-	while (1)
+	n->count_eat = n->count_eat + 1;
+	ft_message(n, " is eating\n", n->start, 10);
+	usleep(n->tt_eat * 1000);
+	sem_post(n->var->sem_fork);
+	sem_post(n->var->sem_fork);
+	if (n->count_eat == n->nb_eat)
 	{
-		sem_wait(n->var->sem_fork);
-		sem_wait(n->var->sem_fork);
-		ft_activity(n);
+		sem_post(n->sem_die);
+		exit(1);
 	}
-	return (0);
+	ft_message(n, " is sleeping\n", current_timestamp(), 12);
+	usleep(n->tt_sleep * 1000);
+	ft_message(n, " is thinking\n", current_timestamp(), 12);
 }
-*/
-
