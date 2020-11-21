@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/07 17:31:51 by akerloc-          #+#    #+#             */
+/*   Updated: 2019/10/07 17:41:11 by akerloc-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 long long	current_timestamp(void)
@@ -49,12 +61,7 @@ void		*fn_monitor(void *p_data)
 n->count_eat != n->nb_eat)
 		{
 			pthread_mutex_lock(n->lock_s);
-			ft_putlnbr_fd(current_timestamp(), 1);
-			write(1, " ", 1);
-			ft_putlnbr_fd(n->start, 1);
-			write(1, " ", 1);
-			ft_putnbr_fd(n->value, 1);
-			write(1, " has died\n", 10);
+			ft_message(n, " has died\n", current_timestamp());
 			pthread_mutex_unlock(n->lock_die);
 			return (0);
 		}

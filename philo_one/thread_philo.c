@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread_philo.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/07 17:31:51 by akerloc-          #+#    #+#             */
+/*   Updated: 2019/10/07 17:41:11 by akerloc-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 void		ft_message(node *n, char *str, long long tm)
@@ -21,7 +33,7 @@ void		ft_message(node *n, char *str, long long tm)
 	i = 0;
 	while (str[i])
 	{
-		n->mess[i + 15 + k] = str[i] ;
+		n->mess[i + 15 + k] = str[i];
 		i++;
 	}
 	n->mess[i + 15 + k] = '\0';
@@ -29,7 +41,7 @@ void		ft_message(node *n, char *str, long long tm)
 	pthread_mutex_unlock(n->lock_s);
 }
 
-time_t	get_time(void)
+time_t		get_time(void)
 {
 	struct timeval	tv;
 
@@ -37,7 +49,7 @@ time_t	get_time(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_sleep(int n)
+void		ft_sleep(int n)
 {
 	time_t start;
 

@@ -35,7 +35,7 @@ static void			ft_rec(node *n, long long a, int k, int t)
 
 	i = ft_puiss_dix(k);
 	c = a / i + 48;
-	n->mess[t - k] =  c;
+	n->mess[t - k] = c;
 	if (k != 0)
 	{
 		b = a % i;

@@ -56,5 +56,6 @@ void			*fn_philo(void *p_data);
 void			*fn_monitor_eat(void *p_data);
 void			*fn_monitor(void *p_data);
 long long		current_timestamp(void);
+void    		ft_message(node *n, char *str, long long tm);
 
 #endif
