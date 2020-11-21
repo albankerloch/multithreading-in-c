@@ -14,7 +14,7 @@
 
 void		*fn_monitor_eat(void *p_data)
 {
-	node	*n;
+	t_node	*n;
 	int		nb_eat_total;
 	int		i;
 
@@ -41,7 +41,7 @@ void		*fn_monitor_eat(void *p_data)
 
 void		*fn_monitor(void *p_data)
 {
-	node *n;
+	t_node *n;
 
 	n = p_data;
 	while (1)
@@ -59,7 +59,7 @@ n->count_eat != n->nb_eat)
 	return (0);
 }
 
-static void	ft_activity(node *n)
+static void	ft_activity(t_node *n)
 {
 	pthread_mutex_lock(&(n->lock));
 	ft_message(n, " has taken a fork\n", current_timestamp());
@@ -85,7 +85,7 @@ static void	ft_activity(node *n)
 
 void		*fn_philo(void *p_data)
 {
-	node *n;
+	t_node *n;
 
 	n = p_data;
 	n->start = current_timestamp();

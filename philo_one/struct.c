@@ -12,7 +12,7 @@
 
 #include "philo_one.h"
 
-int			ft_clear_mutex(bin *var, int i)
+int			ft_clear_mutex(t_bin *var, int i)
 {
 	int j;
 
@@ -29,7 +29,7 @@ int			ft_clear_mutex(bin *var, int i)
 	return (1);
 }
 
-static int	ft_create_philo(bin *var)
+static int	ft_create_philo(t_bin *var)
 {
 	int i;
 
@@ -57,7 +57,7 @@ static int	ft_create_philo(bin *var)
 	return (1);
 }
 
-int			ft_create(bin *var)
+int			ft_create(t_bin *var)
 {
 	if (pthread_mutex_init(&(var->lock_std), NULL) != 0)
 		return (0);
@@ -72,7 +72,7 @@ int			ft_create(bin *var)
 		pthread_mutex_destroy(&(var->lock_std));
 		return (0);
 	}
-	if (!(var->philo = malloc((var->nb + 1) * sizeof(node))))
+	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 	{
 		pthread_mutex_destroy(&(var->lock_die));
 		pthread_mutex_destroy(&(var->lock_crea));

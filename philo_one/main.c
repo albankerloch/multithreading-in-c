@@ -12,7 +12,7 @@
 
 #include "philo_one.h"
 
-int	ft_arg(bin *var, int ac, char **av)
+int	ft_arg(t_bin *var, int ac, char **av)
 {
 	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
 	{
@@ -36,7 +36,7 @@ ft_strlen("Memory allocation error\n"));
 int	main(int ac, char **av)
 {
 	int		i;
-	bin		var;
+	t_bin	var;
 	void	*t;
 
 	if (!(ft_arg(&var, ac, av)))

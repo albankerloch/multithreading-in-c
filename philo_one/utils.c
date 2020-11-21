@@ -40,7 +40,7 @@ int			ft_strisdigit(char *str)
 	return (1);
 }
 
-void		ft_message(node *n, char *str, long long tm)
+void		ft_message(t_node *n, char *str, long long tm)
 {
 	int i;
 	int k;
