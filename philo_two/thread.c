@@ -12,31 +12,50 @@
 
 #include "philo_two.h"
 
-void		ft_chg_str(t_node *n, char *str, unsigned int t, unsigned int j)
+void		*fn_monitor_eat(void *p_data)
 {
-	unsigned int i;
+	t_node	*n;
+	int		nb_eat_total;
+	int		i;
 
-	i = 0;
-	while (i < j)
+	n = p_data;
+	while (1)
 	{
-		n->str[i + t] = str[i];
-		i++;
+		usleep(10 * 1000);
+		nb_eat_total = 0;
+		i = 1;
+		while (i < n->nb + 1)
+		{
+			nb_eat_total = nb_eat_total + n->count_eat;
+			n = n->next;
+			i++;
+		}
+		if (nb_eat_total == n->nb * n->nb_eat)
+		{
+			sem_post(n->sem_die);
+			return (0);
+		}
 	}
-	n->str[i + t] = '\n';
-	n->str[i + t + 1] = '\0';
+	return (0);
 }
 
-void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
+void		*fn_monitor(void *p_data)
 {
-	unsigned int t;
+	t_node *n;
 
-	ft_putlnbr_str(tm, n);
-	n->str[13] = ' ';
-	ft_putnbr_str(n->value, n);
-	t = ft_strlen(n->str);
-	n->str[t] = ' ';
-	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
+	n = p_data;
+	while (1)
+	{
+		usleep(10 * 000);
+		if (current_timestamp() - n->start > n->tt_die && \
+n->count_eat != n->nb_eat)
+		{
+			ft_message(n, " died\n", n->start, 5);
+			sem_post(n->sem_die);
+			break ;
+		}
+	}
+	return (0);
 }
 
 static void	ft_activity(t_node *n)
