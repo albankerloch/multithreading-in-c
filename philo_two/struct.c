@@ -12,7 +12,7 @@
 
 #include "philo_two.h"
 
-int			ft_clear(bin *var, int i)
+int			ft_clear(t_bin *var, int i)
 {
 	i = 1;
 	i++;
@@ -20,7 +20,7 @@ int			ft_clear(bin *var, int i)
 	return (0);
 }
 
-static int	ft_create_philo(bin *var)
+static int	ft_create_philo(t_bin *var)
 {
 	int i;
 
@@ -47,9 +47,9 @@ static int	ft_create_philo(bin *var)
 	return (0);
 }
 
-int			ft_create(bin *var)
+int			ft_create(t_bin *var)
 {
-	if (!(var->philo = malloc((var->nb + 1) * sizeof(node))))
+	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 		return (1);
 	if (ft_create_philo(var))
 		return (1);

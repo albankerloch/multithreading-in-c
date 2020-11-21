@@ -14,7 +14,7 @@
 
 void		*fn_monitor_eat(void *p_data)
 {
-	node	*n;
+	t_node	*n;
 	int		nb_eat_total;
 	int		i;
 
@@ -41,7 +41,7 @@ void		*fn_monitor_eat(void *p_data)
 
 void		*fn_monitor(void *p_data)
 {
-	node *n;
+	t_node *n;
 
 	n = p_data;
 	while (1)
@@ -58,7 +58,7 @@ n->count_eat != n->nb_eat)
 	return (0);
 }
 
-int	ft_arg(bin *var, int ac, char **av)
+int	ft_arg(t_bin *var, int ac, char **av)
 {
 	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
 	{
@@ -76,7 +76,7 @@ int	ft_arg(bin *var, int ac, char **av)
 int			main(int ac, char **av)
 {
 	int		i;
-	bin		var;
+	t_bin		var;
 	void	*t;
 
 	if (!(ft_arg(&var, ac, av)))
