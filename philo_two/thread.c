@@ -1,16 +1,28 @@
-#include "philo_one.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/07 17:31:51 by akerloc-          #+#    #+#             */
+/*   Updated: 2019/10/07 17:41:11 by akerloc-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo_two.h"
 
 void		ft_chg_str(node *n, char *str, unsigned int t, unsigned int j)
 {
 	unsigned int i;
-	
+
 	i = 0;
 	while (i < j)
 	{
 		n->str[i + t] = str[i];
 		i++;
 	}
-	n->str[i + t ] = '\n';
+	n->str[i + t] = '\n';
 	n->str[i + t + 1] = '\0';
 }
 

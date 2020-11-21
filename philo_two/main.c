@@ -1,14 +1,16 @@
-#include "philo_one.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/07 17:31:51 by akerloc-          #+#    #+#             */
+/*   Updated: 2019/10/07 17:41:11 by akerloc-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-long long	current_timestamp(void)
-{
-	struct timeval	te;
-	long long		m;
-
-	gettimeofday(&te, NULL);
-	m = te.tv_sec * 1000LL + te.tv_usec / 1000;
-	return (m);
-}
+#include "philo_two.h"
 
 void		*fn_monitor_eat(void *p_data)
 {
@@ -50,10 +52,25 @@ n->count_eat != n->nb_eat)
 		{
 			ft_message(n, " died\n", n->start, 5);
 			sem_post(n->sem_die);
-			break;
+			break ;
 		}
 	}
 	return (0);
+}
+
+int	ft_arg(bin *var, int ac, char **av)
+{
+	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
+	{
+		write(2, "Argument error\n", ft_strlen("Argument error\n"));
+		return (0);
+	}
+	var->nb = ft_atoi(av[1]);
+	var->time_to_die = ft_atoi(av[2]);
+	var->time_to_eat = ft_atoi(av[3]);
+	var->time_to_sleep = ft_atoi(av[4]);
+	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
+	return (1);
 }
 
 int			main(int ac, char **av)
@@ -62,9 +79,8 @@ int			main(int ac, char **av)
 	bin		var;
 	void	*t;
 
-	if (ft_arg(&var, ac, av))
+	if (!(ft_arg(&var, ac, av)))
 		return (1);
-
 	var.str_fork[0] = 'f';
 	var.str_fork[1] = '\0';
 	sem_unlink(var.str_fork);
@@ -75,7 +91,11 @@ int			main(int ac, char **av)
 	var.sem_die = sem_open(var.str_die, O_CREAT | O_EXCL, 0664, 1);
 	sem_wait(var.sem_die);
 	if (ft_create(&var))
+	{
+		write(2, "Memory allocation error\n",\
+ft_strlen("Memory allocation error\n"));
 		return (1);
+	}
 	i = 1;
 	while (i < var.nb + 1)
 	{

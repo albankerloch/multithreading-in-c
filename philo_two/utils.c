@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,36 +12,40 @@
 
 #include "philo_two.h"
 
-static int	ft_isspace(char c)
+int			ft_check_arg(int ac, char **av)
 {
-	if (c == '\t' || c == '\n' || c == '\v' ||
-	c == '\f' || c == '\r' || c == ' ')
-		return (1);
-	else
-		return (0);
+	int i;
+
+	i = 1;
+	while (i < ac)
+	{
+		if (!(ft_strisdigit(av[i])))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-int			ft_atoi(const char *str)
+int			ft_strisdigit(char *str)
 {
-	int		i;
-	long	res;
-	int		sign;
+	int i;
 
 	i = 0;
-	res = 0;
-	sign = 1;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
+	while (str[i])
 	{
-		if (str[i] == '-')
-			sign = sign * (-1);
+		if (!(str[i] >= 48 && str[i] <= 57))
+			return (0);
 		i++;
 	}
-	while (str[i] > 47 && str[i] < 58 && str[i] != '\0')
-	{
-		res = res * 10 + str[i] - 48;
-		i++;
-	}
-	return (res * sign);
+	return (1);
+}
+
+long long	current_timestamp(void)
+{
+	struct timeval	te;
+	long long		m;
+
+	gettimeofday(&te, NULL);
+	m = te.tv_sec * 1000LL + te.tv_usec / 1000;
+	return (m);
 }

@@ -10,9 +10,10 @@
 #                                                                              #
 #******************************************************************************#
 
-SRCS =	one_main.c \
-	arg.c \
-	thread_philo.c \
+SRCS =	main.c \
+	struct.c \
+	utils.c \
+	thread.c \
 	ft_atoi.c \
 	ft_putlnbr_str.c \
 	ft_putlnbr_fd.c \
@@ -22,7 +23,7 @@ SRCS =	one_main.c \
 	ft_strlen.c \
 	ft_isdigit.c
 OBJS = ${SRCS:.c=.o}
-NAME = philo_one
+NAME = philo_two
 HEADER = .
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I .
