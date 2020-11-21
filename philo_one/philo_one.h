@@ -42,12 +42,9 @@ typedef struct s_bin
 } bin;
 
 size_t			ft_strlen(const char *str);
-void			ft_putstr_fd(char *s, int fd);
-void			ft_putlnbr_fd(long long n, int fd);
-void			ft_putnbr_fd(int n, int fd);
-void			ft_putnbr_mess(node *n, int a, int t);
 void			ft_putlnbr_mess(node *n, long long a, int t);
-int				ft_isdigit(int i);
+int		        ft_strisdigit(char *str);
+int	            ft_check_arg(int ac, char **av);
 int				ft_atoi(const char *str);
 int             ft_arg(bin *var, int ac, char **av);
 int             ft_create(bin *var);
@@ -57,5 +54,6 @@ void			*fn_monitor_eat(void *p_data);
 void			*fn_monitor(void *p_data);
 long long		current_timestamp(void);
 void    		ft_message(node *n, char *str, long long tm);
+void		    ft_sleep(int n);
 
 #endif

@@ -11,12 +11,12 @@
 #******************************************************************************#
 
 SRCS =	main.c \
-	arg.c \
-	thread_philo.c \
-	ft_atoi.c \
-	ft_putlnbr_mess.c \
-	ft_strlen.c \
-	ft_isdigit.c
+		utils.c \
+		struct.c \
+		thread.c \
+		ft_atoi.c \
+		ft_putlnbr_mess.c \
+		ft_strlen.c
 OBJS = ${SRCS:.c=.o}
 NAME = philo_one
 HEADER = .

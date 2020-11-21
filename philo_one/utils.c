@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread_philo.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,35 @@
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+int	ft_check_arg(int ac, char **av)
+{
+	int i;
+
+	i = 1;
+	while (i < ac)
+	{
+//		printf("ac=%d i=%d arg=|%s| strisdigit=%d\n", ac, i, av[i], ft_strisdigit(av[i]));
+		if (!(ft_strisdigit(av[i])))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		ft_strisdigit(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] >= 48 && str[i] <= 57))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void		ft_message(node *n, char *str, long long tm)
 {
@@ -41,59 +70,21 @@ void		ft_message(node *n, char *str, long long tm)
 	pthread_mutex_unlock(n->lock_s);
 }
 
-time_t		get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
 void		ft_sleep(int n)
 {
 	time_t start;
 
-	start = get_time();
-	while ((get_time() - start) < n)
+	start = current_timestamp();
+	while ((current_timestamp() - start) < n)
 		usleep(200);
 }
 
-static void	ft_activity(node *n)
+long long	current_timestamp(void)
 {
-	pthread_mutex_lock(&(n->lock));
-	ft_message(n, " has taken a fork\n", current_timestamp());
-	pthread_mutex_lock(&(n->next->lock));
-	ft_message(n, " has taken a fork\n", current_timestamp());
-	n->start = current_timestamp();
-	n->count_eat = n->count_eat + 1;
-	ft_message(n, " is eating\n", n->start);
-	ft_sleep(n->tt_eat);
-	pthread_mutex_unlock(&(n->next->lock));
-	pthread_mutex_unlock(&(n->lock));
-	if (n->count_eat == n->nb_eat)
-	{
-		while (1)
-		{
-			usleep(5000 * 1000);
-		}
-	}
-	ft_message(n, " is sleeping\n", current_timestamp());
-	ft_sleep(n->tt_sleep);
-	ft_message(n, " is thinking\n", current_timestamp());
-}
+	struct timeval	te;
+	long long		m;
 
-void		*fn_philo(void *p_data)
-{
-	node *n;
-
-	n = p_data;
-	n->start = current_timestamp();
-	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p_data))
-		return (0);
-	pthread_detach(n->monitor_die);
-	pthread_mutex_unlock(n->lock_c);
-	ft_message(n, " is thinking\n", n->start);
-	while (1)
-		ft_activity(n);
-	return (0);
+	gettimeofday(&te, NULL);
+	m = te.tv_sec * 1000LL + te.tv_usec / 1000;
+	return (m);
 }

@@ -12,72 +12,33 @@
 
 #include "philo_one.h"
 
-long long	current_timestamp(void)
+int	ft_arg(bin *var, int ac, char **av)
 {
-	struct timeval	te;
-	long long		m;
-
-	gettimeofday(&te, NULL);
-	m = te.tv_sec * 1000LL + te.tv_usec / 1000;
-	return (m);
-}
-
-void		*fn_monitor_eat(void *p_data)
-{
-	node	*n;
-	int		nb_eat_total;
-	int		i;
-
-	n = p_data;
-	while (1)
+	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
 	{
-		usleep(10 * 1000);
-		nb_eat_total = 0;
-		i = 1;
-		while (i < n->nb + 1)
-		{
-			nb_eat_total = nb_eat_total + n->count_eat;
-			n = n->next;
-			i++;
-		}
-		if (nb_eat_total == n->nb * n->nb_eat)
-		{
-			pthread_mutex_unlock(n->lock_die);
-			return (0);
-		}
+		write(2, "Argument error\n", ft_strlen("Argument error\n"));
+		return (0);
 	}
-	return (0);
-}
-
-void		*fn_monitor(void *p_data)
-{
-	node *n;
-
-	n = p_data;
-	while (1)
+	var->nb = ft_atoi(av[1]);
+	var->time_to_die = ft_atoi(av[2]);
+	var->time_to_eat = ft_atoi(av[3]);
+	var->time_to_sleep = ft_atoi(av[4]);
+	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
+	if (!(ft_create(var)))
 	{
-		usleep(2000);
-		if (current_timestamp() - n->start > n->tt_die && \
-n->count_eat != n->nb_eat)
-		{
-			pthread_mutex_lock(n->lock_s);
-			ft_message(n, " has died\n", current_timestamp());
-			pthread_mutex_unlock(n->lock_die);
-			return (0);
-		}
+		write(2, "Memory allocation error\n", ft_strlen("Memory allocation error\n"));
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
-int			main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	int		i;
 	bin		var;
 	void	*t;
 
-	if (ft_arg(&var, ac, av))
-		return (1);
-	if (ft_create(&var))
+	if (!(ft_arg(&var, ac, av)))
 		return (1);
 	pthread_mutex_lock(&(var.lock_die));
 	i = 1;

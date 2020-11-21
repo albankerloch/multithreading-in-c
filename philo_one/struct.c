@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   argc.c                                             :+:      :+:    :+:   */
+/*   struct.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akerloc- <akerloc-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,18 +11,6 @@
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-int			ft_arg(bin *var, int ac, char **av)
-{
-	if (ac > 6 || ac < 5)
-		return (1);
-	var->nb = ft_atoi(av[1]);
-	var->time_to_die = ft_atoi(av[2]);
-	var->time_to_eat = ft_atoi(av[3]);
-	var->time_to_sleep = ft_atoi(av[4]);
-	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
-	return (0);
-}
 
 int			ft_clear_mutex(bin *var, int i)
 {
@@ -35,6 +23,7 @@ int			ft_clear_mutex(bin *var, int i)
 		j++;
 	}
 	pthread_mutex_destroy(&(var->lock_die));
+	pthread_mutex_destroy(&(var->lock_crea));
 	pthread_mutex_destroy(&(var->lock_std));
 	free(var->philo);
 	return (0);
@@ -65,27 +54,32 @@ static int	ft_create_philo(bin *var)
 			return (ft_clear_mutex(var, i));
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int			ft_create(bin *var)
 {
 	if (pthread_mutex_init(&(var->lock_std), NULL) != 0)
-		return (1);
+		return (0);
 	if (pthread_mutex_init(&(var->lock_crea), NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&(var->lock_die), NULL) != 0)
 	{
 		pthread_mutex_destroy(&(var->lock_std));
-		return (1);
+		return (0);
+	}
+	if (pthread_mutex_init(&(var->lock_die), NULL) != 0)
+	{
+		pthread_mutex_destroy(&(var->lock_crea));
+		pthread_mutex_destroy(&(var->lock_std));
+		return (0);
 	}
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(node))))
 	{
 		pthread_mutex_destroy(&(var->lock_die));
+		pthread_mutex_destroy(&(var->lock_crea));
 		pthread_mutex_destroy(&(var->lock_std));
-		return (1);
+		return (0);
 	}
-	if (ft_create_philo(var))
-		return (1);
-	return (0);
+	if (!(ft_create_philo(var)))
+		return (0);
+	return (1);
 }
