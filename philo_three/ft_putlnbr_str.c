@@ -27,7 +27,7 @@ static long long	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void			ft_rec(long long a, int p, node *n, int t)
+static void			ft_rec(long long a, int p, t_node *n, int t)
 {
 	char		c;
 	long long	i;
@@ -43,7 +43,7 @@ static void			ft_rec(long long a, int p, node *n, int t)
 	}
 }
 
-void				ft_putlnbr_str(long long a, node *n)
+void				ft_putlnbr_str(long long a, t_node *n)
 {
 	int			p;
 	long long	b;

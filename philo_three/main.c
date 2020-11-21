@@ -24,7 +24,7 @@ long long	current_timestamp(void)
 
 void		*fn_monitor(void *p_data)
 {
-	node *n;
+	t_node *n;
 	int i;
 
 	n = p_data;
@@ -47,7 +47,7 @@ n->count_eat != n->nb_eat)
 	return (0);
 }
 
-static int 	routine(node *n)
+static int 	routine(t_node *n)
 {
 	void *p;
 
@@ -69,7 +69,7 @@ static int 	routine(node *n)
 int			main(int ac, char **av)
 {
 	int		i;
-	bin		var;
+	t_bin		var;
 
 	if (ft_arg(&var, ac, av))
 		return (1);

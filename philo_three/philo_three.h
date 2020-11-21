@@ -46,7 +46,7 @@ typedef struct		s_node
 	char			str[50];
 	struct s_bin	*var;
 	pid_t			pid;
-}					node;
+}					t_node;
 
 typedef struct		s_bin
 {
@@ -55,12 +55,12 @@ typedef struct		s_bin
 	int				time_to_sleep;
 	int				nb_eat;
 	int				nb;
-	node			*philo;
+	t_node			*philo;
 	sem_t			*sem_die;
 	sem_t			*sem_fork;
 	char			str_die[2];
 	char			str_fork[2];
-}					bin;
+}					t_bin;
 
 size_t				ft_strlen(const char *str);
 void				ft_putstr_fd(char *s, int fd);
@@ -68,18 +68,18 @@ void				ft_putlnbr_fd(long long n, int fd);
 void				ft_putnbr_fd(int n, int fd);
 int					ft_isdigit(int i);
 int					ft_atoi(const char *str);
-int					ft_arg(bin *var, int ac, char **av);
-int					ft_create(bin *var);
-int					ft_clear(bin *var, int i);
+int					ft_arg(t_bin *var, int ac, char **av);
+int					ft_create(t_bin *var);
+int					ft_clear(t_bin *var, int i);
 void				*fn_philo(void *p_data);
 void				*fn_monitor_eat(void *p_data);
 void				*fn_monitor(void *p_data);
 long long			current_timestamp(void);
 void				print_value(sem_t *sem_die, int *val);
-void				ft_putlnbr_str(long long a, node *n);
-void				ft_putnbr_str(int a, node *n);
-void				ft_message(node *n, char *str,\
+void				ft_putlnbr_str(long long a, t_node *n);
+void				ft_putnbr_str(int a, t_node *n);
+void				ft_message(t_node *n, char *str,\
 long long tm, unsigned int j);
-void				ft_activity(node *n);
+void				ft_activity(t_node *n);
 
 #endif

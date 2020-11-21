@@ -12,7 +12,7 @@
 
 #include "philo_three.h"
 
-void		ft_chg_str(node *n, char *str, unsigned int t, unsigned int j)
+void		ft_chg_str(t_node *n, char *str, unsigned int t, unsigned int j)
 {
 	unsigned int i;
 	
@@ -26,7 +26,7 @@ void		ft_chg_str(node *n, char *str, unsigned int t, unsigned int j)
 	n->str[i + t + 1] = '\0';
 }
 
-void		ft_message(node *n, char *str, long long tm, unsigned int j)
+void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
@@ -39,7 +39,7 @@ void		ft_message(node *n, char *str, long long tm, unsigned int j)
 	write(1, n->str, ft_strlen(n->str));
 }
 
-void	ft_activity(node *n)
+void	ft_activity(t_node *n)
 {
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
