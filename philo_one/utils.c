@@ -12,7 +12,7 @@
 
 #include "philo_one.h"
 
-int	ft_check_arg(int ac, char **av)
+int			ft_check_arg(int ac, char **av)
 {
 	int i;
 
@@ -26,7 +26,7 @@ int	ft_check_arg(int ac, char **av)
 	return (1);
 }
 
-int		ft_strisdigit(char *str)
+int			ft_strisdigit(char *str)
 {
 	int i;
 

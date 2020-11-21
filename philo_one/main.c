@@ -26,7 +26,8 @@ int	ft_arg(bin *var, int ac, char **av)
 	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
 	if (!(ft_create(var)))
 	{
-		write(2, "Memory allocation error\n", ft_strlen("Memory allocation error\n"));
+		write(2, "Memory allocation error\n",\
+ft_strlen("Memory allocation error\n"));
 		return (0);
 	}
 	return (1);
@@ -51,13 +52,11 @@ int	main(int ac, char **av)
 		pthread_detach(var.philo[i].thread);
 		pthread_mutex_lock(&(var.lock_crea));
 		pthread_mutex_unlock(&(var.lock_crea));
-		usleep(50);
 		i++;
 	}
-	t = &(var.philo[1]);
-	if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
+	if (pthread_create(&(var.philo[i].thread), NULL, fn_monitor_eat, t))
 		return (ft_clear_mutex(&var, var.nb));
-	pthread_detach(var.philo[1].thread);
+	pthread_detach(var.philo[i].thread);
 	pthread_mutex_lock(&(var.lock_die));
 	pthread_mutex_unlock(&(var.lock_die));
 	return (ft_clear_mutex(&var, var.nb));

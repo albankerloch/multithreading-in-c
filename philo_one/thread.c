@@ -12,7 +12,6 @@
 
 #include "philo_one.h"
 
-
 void		*fn_monitor_eat(void *p_data)
 {
 	node	*n;
