@@ -29,6 +29,23 @@ void		ft_message(node *n, char *str, long long tm)
 	pthread_mutex_unlock(n->lock_s);
 }
 
+time_t	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+void	ft_sleep(int n)
+{
+	time_t start;
+
+	start = get_time();
+	while ((get_time() - start) < n)
+		usleep(200);
+}
+
 static void	ft_activity(node *n)
 {
 	pthread_mutex_lock(&(n->lock));
@@ -38,7 +55,7 @@ static void	ft_activity(node *n)
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
 	ft_message(n, " is eating\n", n->start);
-	usleep(n->tt_eat * 1000);
+	ft_sleep(n->tt_eat);
 	pthread_mutex_unlock(&(n->next->lock));
 	pthread_mutex_unlock(&(n->lock));
 	if (n->count_eat == n->nb_eat)
@@ -49,7 +66,7 @@ static void	ft_activity(node *n)
 		}
 	}
 	ft_message(n, " is sleeping\n", current_timestamp());
-	usleep(n->tt_sleep * 1000);
+	ft_sleep(n->tt_sleep);
 	ft_message(n, " is thinking\n", current_timestamp());
 }
 
