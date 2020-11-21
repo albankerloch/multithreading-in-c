@@ -61,7 +61,7 @@ int			main(int ac, char **av)
 	while (i < var.nb + 1)
 	{
 		if (!(ft_loop(i, &var)))
-			return (ft_clear(&var, var.nb));
+			return (ft_clear(&var));
 		i++;
 	}
 	i = 1;
@@ -73,5 +73,5 @@ int			main(int ac, char **av)
 	i = 1;
 	while (i < var.nb + 1)
 		kill(var.philo[i++].pid, SIGKILL);
-	return (ft_clear(&var, var.nb));
+	return (ft_clear(&var));
 }
