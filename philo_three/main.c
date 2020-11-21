@@ -12,93 +12,56 @@
 
 #include "philo_three.h"
 
-long long	current_timestamp(void)
+int			ft_arg(t_bin *var, int ac, char **av)
 {
-	struct timeval	te;
-	long long		m;
-
-	gettimeofday(&te, NULL);
-	m = te.tv_sec * 1000LL + te.tv_usec / 1000;
-	return (m);
-}
-
-void		*fn_monitor(void *p_data)
-{
-	t_node *n;
-	int i;
-
-	n = p_data;
-	while (1)
+	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
 	{
-		usleep(10 * 000);
-		if (current_timestamp() - n->start > n->tt_die && \
-n->count_eat != n->nb_eat)
-		{
-			ft_message(n, " died\n", n->start, 5);
-			i = 1;
-			while (i < n->var->nb + 1)
-			{
-				sem_post(n->sem_die);
-				i++;
-			}
-			break;
-		}
-	}
-	return (0);
-}
-
-static int 	routine(t_node *n)
-{
-	void *p;
-
-	p = (void *)n;
-	n->start = current_timestamp();
-	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p))
+		write(2, "Argument error\n", ft_strlen("Argument error\n"));
 		return (0);
-	pthread_detach(n->monitor_die);
-	ft_message(n, " is thinking\n", n->start, 12);
-	while (1)
-	{
-		sem_wait(n->var->sem_fork);
-		sem_wait(n->var->sem_fork);
-		ft_activity(n);
 	}
-	return (0);
+	var->nb = ft_atoi(av[1]);
+	var->time_to_die = ft_atoi(av[2]);
+	var->time_to_eat = ft_atoi(av[3]);
+	var->time_to_sleep = ft_atoi(av[4]);
+	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
+	if (ft_create(var))
+	{
+		write(2, "Memory allocation error\n",\
+ft_strlen("Memory allocation error\n"));
+		return (0);
+	}
+	return (1);
+}
+
+static int	ft_loop(int i, t_bin *var)
+{
+	var->philo[i].pid = fork();
+	if (var->philo[i].pid < 0)
+	{
+		write(2, "Fork error\n", ft_strlen("Fork error\n"));
+		return (0);
+	}
+	else if (var->philo[i].pid == 0)
+	{
+		ft_routine(&var->philo[i]);
+		exit(0);
+	}
+	usleep(100);
+	return (1);
 }
 
 int			main(int ac, char **av)
 {
 	int		i;
-	t_bin		var;
+	t_bin	var;
 
-	if (ft_arg(&var, ac, av))
+	if (!(ft_arg(&var, ac, av)))
 		return (1);
-
-	var.str_fork[0] = 'f';
-	var.str_fork[1] = '\0';
-	sem_unlink(var.str_fork);
-	var.sem_fork = sem_open(var.str_fork, O_CREAT | O_EXCL, 0664, var.nb);
-	var.str_die[0] = 'd';
-	var.str_die[1] = '\0';
-	sem_unlink(var.str_die);
-	var.sem_die = sem_open(var.str_die, O_CREAT | O_EXCL, 0664, 1);
-
-	if (ft_create(&var))
-		return (1);
-
 	i = 1;
 	while (i < var.nb + 1)
 	{
-		var.philo[i].pid = fork();
-		if (var.philo[i].pid < 0)
-			return (1);
-		else if (var.philo[i].pid == 0)
-		{
-			routine(&var.philo[i]);
-			exit(0);
-		}
-		usleep(100);
-		printf("[%d] [%d] hi i=%d fork=%d\n", getppid(), getpid(), i, var.philo[i].pid);
+		if (!(ft_loop(i, &var)))
+			return (ft_clear(&var, var.nb));
 		i++;
 	}
 	i = 1;

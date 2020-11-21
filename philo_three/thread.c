@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                          :+:      :+:    :+:   */
+/*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akerloc- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,34 +12,51 @@
 
 #include "philo_three.h"
 
-void		ft_chg_str(t_node *n, char *str, unsigned int t, unsigned int j)
+void		*fn_monitor(void *p_data)
 {
-	unsigned int i;
-	
-	i = 0;
-	while (i < j)
+	t_node	*n;
+	int		i;
+
+	n = p_data;
+	while (1)
 	{
-		n->str[i + t] = str[i];
-		i++;
+		usleep(10 * 000);
+		if (current_timestamp() - n->start > n->tt_die && \
+n->count_eat != n->nb_eat)
+		{
+			ft_message(n, " died\n", n->start, 5);
+			i = 1;
+			while (i < n->var->nb + 1)
+			{
+				sem_post(n->sem_die);
+				i++;
+			}
+			break ;
+		}
 	}
-	n->str[i + t ] = '\n';
-	n->str[i + t + 1] = '\0';
+	return (0);
 }
 
-void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
+int			ft_routine(t_node *n)
 {
-	unsigned int t;
+	void *p;
 
-	ft_putlnbr_str(tm, n);
-	n->str[13] = ' ';
-	ft_putnbr_str(n->value, n);
-	t = ft_strlen(n->str);
-	n->str[t] = ' ';
-	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
+	p = (void *)n;
+	n->start = current_timestamp();
+	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p))
+		return (0);
+	pthread_detach(n->monitor_die);
+	ft_message(n, " is thinking\n", n->start, 12);
+	while (1)
+	{
+		sem_wait(n->var->sem_fork);
+		sem_wait(n->var->sem_fork);
+		ft_activity(n);
+	}
+	return (0);
 }
 
-void	ft_activity(t_node *n)
+void		ft_activity(t_node *n)
 {
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);

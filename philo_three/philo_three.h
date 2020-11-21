@@ -81,5 +81,8 @@ void				ft_putnbr_str(int a, t_node *n);
 void				ft_message(t_node *n, char *str,\
 long long tm, unsigned int j);
 void				ft_activity(t_node *n);
+int					ft_routine(t_node *n);
+int					ft_strisdigit(char *str);
+int					ft_check_arg(int ac, char **av);
 
 #endif

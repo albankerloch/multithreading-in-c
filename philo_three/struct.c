@@ -12,18 +12,6 @@
 
 #include "philo_three.h"
 
-int			ft_arg(t_bin *var, int ac, char **av)
-{
-	if (ac > 6 || ac < 5)
-		return (1);
-	var->nb = ft_atoi(av[1]);
-	var->time_to_die = ft_atoi(av[2]);
-	var->time_to_eat = ft_atoi(av[3]);
-	var->time_to_sleep = ft_atoi(av[4]);
-	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
-	return (0);
-}
-
 int			ft_clear(t_bin *var, int i)
 {
 	i = 1;
@@ -61,6 +49,14 @@ static int	ft_create_philo(t_bin *var)
 
 int			ft_create(t_bin *var)
 {
+	var->str_fork[0] = 'f';
+	var->str_fork[1] = '\0';
+	sem_unlink(var->str_fork);
+	var->sem_fork = sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb);
+	var->str_die[0] = 'd';
+	var->str_die[1] = '\0';
+	sem_unlink(var->str_die);
+	var->sem_die = sem_open(var->str_die, O_CREAT | O_EXCL, 0664, 1);
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 		return (1);
 	if (ft_create_philo(var))
