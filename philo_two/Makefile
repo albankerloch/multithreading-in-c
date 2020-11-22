@@ -13,6 +13,7 @@
 SRCS =	main.c \
 	struct.c \
 	utils.c \
+	message.c \
 	thread.c \
 	ft_atoi.c \
 	ft_putlnbr_str.c \

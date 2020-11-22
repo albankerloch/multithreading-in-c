@@ -82,6 +82,7 @@ void				ft_message(t_node *n, char *str, long long tm,\
 unsigned int j);
 int					ft_check_arg(int ac, char **av);
 int					ft_strisdigit(char *str);
-void				ft_message_die(t_node *n, char *str, long long tm, unsigned int j);
+void				ft_message_die(t_node *n, char *str, long long tm,\
+unsigned int j);
 
 #endif

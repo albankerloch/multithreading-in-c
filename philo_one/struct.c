@@ -28,11 +28,8 @@ int			ft_clear(t_bin *var, int i)
 	return (1);
 }
 
-static int	ft_create_philo(t_bin *var)
+static int	ft_create_philo(t_bin *var, int i)
 {
-	int i;
-
-	i = 1;
 	while (i < var->nb + 1)
 	{
 		if (i == var->nb)
@@ -74,7 +71,7 @@ int			ft_create(t_bin *var)
 		pthread_mutex_destroy(&(var->lock_std));
 		return (1);
 	}
-	if (ft_create_philo(var))
+	if (ft_create_philo(var, 1))
 		return (1);
 	return (0);
 }

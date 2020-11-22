@@ -12,49 +12,6 @@
 
 #include "philo_one.h"
 
-void		ft_chg_str(t_node *n, char *str, unsigned int t, unsigned int j)
-{
-	unsigned int i;
-
-	i = 0;
-	while (i < j)
-	{
-		n->str[i + t] = str[i];
-		i++;
-	}
-	n->str[i + t] = '\n';
-	n->str[i + t + 1] = '\0';
-}
-
-void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
-{
-	unsigned int t;
-
-	pthread_mutex_lock(n->lock_std);
-	ft_putlnbr_str(tm, n);
-	n->str[13] = ' ';
-	ft_putnbr_str(n->value, n);
-	t = ft_strlen(n->str);
-	n->str[t] = ' ';
-	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
-	pthread_mutex_unlock(n->lock_std);
-}
-
-void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)
-{
-	unsigned int t;
-
-	pthread_mutex_lock(n->lock_std);
-	ft_putlnbr_str(tm, n);
-	n->str[13] = ' ';
-	ft_putnbr_str(n->value, n);
-	t = ft_strlen(n->str);
-	n->str[t] = ' ';
-	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
-}
-
 int			ft_check_arg(int ac, char **av)
 {
 	int i;
