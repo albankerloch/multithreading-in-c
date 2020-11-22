@@ -62,14 +62,16 @@ n->count_eat != n->nb_eat)
 
 static void	ft_activity(t_node *n)
 {
+	pthread_mutex_lock(&(n->lock));
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
+	pthread_mutex_lock(&(n->next->lock));
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
 	ft_message(n, " is eating\n", n->start, 10);
 	usleep(n->tt_eat * 1000);
-	sem_post(n->var->sem_fork);
-	sem_post(n->var->sem_fork);
+	pthread_mutex_unlock(&(n->next->lock));
+	pthread_mutex_unlock(&(n->lock));
 	if (n->count_eat == n->nb_eat)
 		while (1)
 		{
@@ -92,8 +94,8 @@ void		*fn_philo(void *p_data)
 	ft_message(n, " is thinking\n", n->start, 12);
 	while (1)
 	{
-		sem_wait(n->var->sem_fork);
-		sem_wait(n->var->sem_fork);
+		//sem_wait(n->var->sem_fork);
+		//sem_wait(n->var->sem_fork);
 		ft_activity(n);
 	}
 	return (0);

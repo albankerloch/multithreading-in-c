@@ -43,6 +43,8 @@ static int	ft_create_philo(t_bin *var)
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		var->philo[i].lock_die = &(var->lock_die);
+		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
+			return ((!(ft_clear(var))));
 		i++;
 	}
 	return (0);
