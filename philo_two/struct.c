@@ -40,6 +40,7 @@ static int	ft_create_philo(t_bin *var)
 		var->philo[i].fork_lock = 0;
 		var->philo[i].nb = var->nb;
 		var->philo[i].sem_die = var->sem_die;
+		var->philo[i].sem_std = var->sem_std;
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		i++;
@@ -58,6 +59,10 @@ int			ft_create(t_bin *var)
 	sem_unlink(var->str_die);
 	var->sem_die = sem_open(var->str_die, O_CREAT | O_EXCL, 0664, 1);
 	sem_wait(var->sem_die);
+	var->str_std[0] = 's';
+	var->str_std[1] = '\0';
+	sem_unlink(var->str_std);
+	var->sem_std = sem_open(var->str_std, O_CREAT | O_EXCL, 0664, 1);
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 	{
 		sem_unlink(var->str_fork);

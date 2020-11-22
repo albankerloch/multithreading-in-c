@@ -41,6 +41,7 @@ typedef struct		s_node
 	struct s_node	*next;
 	int				nb;
 	sem_t			*sem_die;
+	sem_t			*sem_std;
 	char			str[50];
 	struct s_bin	*var;
 }					t_node;
@@ -54,8 +55,10 @@ typedef struct		s_bin
 	int				nb;
 	t_node			*philo;
 	sem_t			*sem_die;
+	sem_t			*sem_std;
 	sem_t			*sem_fork;
 	char			str_die[2];
+	char			str_std[2];
 	char			str_fork[2];
 }					t_bin;
 
@@ -76,6 +79,8 @@ void				print_value(sem_t *sem_die, int *val);
 void				ft_putlnbr_str(long long a, t_node *n);
 void				ft_putnbr_str(int a, t_node *n);
 void				ft_message(t_node *n, char *str, long long tm,\
+unsigned int j);
+void				ft_message_die(t_node *n, char *str, long long tm,\
 unsigned int j);
 int					ft_check_arg(int ac, char **av);
 int					ft_strisdigit(char *str);
