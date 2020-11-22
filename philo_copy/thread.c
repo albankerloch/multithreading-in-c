@@ -10,7 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
+
+void		*fn_monitor_eat(void *p_data)
+{
+	t_node	*n;
+	int		nb_eat_total;
+	int		i;
+
+	n = p_data;
+	while (1)
+	{
+		usleep(10 * 1000);
+		nb_eat_total = 0;
+		i = 1;
+		while (i < n->nb + 1)
+		{
+			nb_eat_total = nb_eat_total + n->count_eat;
+			n = n->next;
+			i++;
+		}
+		if (nb_eat_total == n->nb * n->nb_eat)
+		{
+			pthread_mutex_unlock(n->lock_die);
+			//sem_post(n->sem_die);
+			return (0);
+		}
+	}
+	return (0);
+}
 
 void		*fn_monitor(void *p_data)
 {
@@ -19,14 +47,14 @@ void		*fn_monitor(void *p_data)
 	n = p_data;
 	while (1)
 	{
-		usleep(2000);
+		usleep(10 * 000);
 		if (current_timestamp() - n->start > n->tt_die && \
 n->count_eat != n->nb_eat)
 		{
-			pthread_mutex_lock(n->lock_s);
-			ft_message(n, " has died\n", current_timestamp());
+			ft_message(n, " died\n", n->start, 5);
 			pthread_mutex_unlock(n->lock_die);
-			return (0);
+			//sem_post(n->sem_die);
+			break ;
 		}
 	}
 	return (0);
@@ -34,26 +62,22 @@ n->count_eat != n->nb_eat)
 
 static void	ft_activity(t_node *n)
 {
-	pthread_mutex_lock(&(n->lock));
-	ft_message(n, " has taken a fork\n", current_timestamp());
-	pthread_mutex_lock(&(n->next->lock));
-	ft_message(n, " has taken a fork\n", current_timestamp());
+	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
+	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
-	ft_message(n, " is eating\n", n->start);
-	ft_sleep(n->tt_eat);
-	pthread_mutex_unlock(&(n->next->lock));
-	pthread_mutex_unlock(&(n->lock));
-	/*if (n->count_eat == n->nb_eat)
-	{
+	ft_message(n, " is eating\n", n->start, 10);
+	usleep(n->tt_eat * 1000);
+	sem_post(n->var->sem_fork);
+	sem_post(n->var->sem_fork);
+	if (n->count_eat == n->nb_eat)
 		while (1)
 		{
 			usleep(5000 * 1000);
 		}
-	}*/
-	ft_message(n, " is sleeping\n", current_timestamp());
-	ft_sleep(n->tt_sleep);
-	ft_message(n, " is thinking\n", current_timestamp());
+	ft_message(n, " is sleeping\n", current_timestamp(), 12);
+	usleep(n->tt_sleep * 1000);
+	ft_message(n, " is thinking\n", current_timestamp(), 12);
 }
 
 void		*fn_philo(void *p_data)
@@ -65,9 +89,12 @@ void		*fn_philo(void *p_data)
 	if (pthread_create(&(n->monitor_die), NULL, fn_monitor, p_data))
 		return (0);
 	pthread_detach(n->monitor_die);
-	//pthread_mutex_unlock(n->lock_c);
-	ft_message(n, " is thinking\n", n->start);
+	ft_message(n, " is thinking\n", n->start, 12);
 	while (1)
+	{
+		sem_wait(n->var->sem_fork);
+		sem_wait(n->var->sem_fork);
 		ft_activity(n);
+	}
 	return (0);
 }

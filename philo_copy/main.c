@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int	ft_arg(t_bin *var, int ac, char **av)
 {
@@ -24,8 +24,7 @@ int	ft_arg(t_bin *var, int ac, char **av)
 	var->time_to_eat = ft_atoi(av[3]);
 	var->time_to_sleep = ft_atoi(av[4]);
 	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
-	var->one_died = 0;
-	if (!(ft_create(var)))
+	if (ft_create(var))
 	{
 		write(2, "Memory allocation error\n",\
 ft_strlen("Memory allocation error\n"));
@@ -42,21 +41,20 @@ int	main(int ac, char **av)
 
 	if (!(ft_arg(&var, ac, av)))
 		return (1);
-	pthread_mutex_lock(&(var.lock_die));
 	i = 1;
 	while (i < var.nb + 1)
 	{
 		t = &(var.philo[i]);
-		//pthread_mutex_lock(&(var.lock_crea));
 		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
-			return (ft_clear_mutex(&var, var.nb));
+			return (ft_clear(&var));
 		pthread_detach(var.philo[i].thread);
-		usleep(50);
-		//pthread_mutex_lock(&(var.lock_crea));
-		//pthread_mutex_unlock(&(var.lock_crea));
 		i++;
 	}
+	t = &(var.philo[1]);
+	if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
+		return (ft_clear(&var));
+	pthread_detach(var.philo[i].thread);
 	pthread_mutex_lock(&(var.lock_die));
-	//pthread_mutex_unlock(&(var.lock_die));
-	return (ft_clear_mutex(&var, var.nb));
+	//sem_wait(var.sem_die);
+	return (ft_clear(&var));
 }
