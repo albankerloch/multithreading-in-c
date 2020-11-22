@@ -46,7 +46,7 @@ void		*fn_monitor(void *p_data)
 	n = p_data;
 	while (1)
 	{
-		usleep(10 * 000);
+		usleep(2000);
 		if (current_timestamp() - n->start > n->tt_die && \
 n->count_eat != n->nb_eat)
 		{
@@ -65,7 +65,7 @@ static void	ft_activity(t_node *n)
 	n->start = current_timestamp();
 	n->count_eat = n->count_eat + 1;
 	ft_message(n, " is eating\n", n->start, 10);
-	usleep(n->tt_eat * 1000);
+	ft_sleep(n->tt_eat);
 	sem_post(n->var->sem_fork);
 	sem_post(n->var->sem_fork);
 	if (n->count_eat == n->nb_eat)
@@ -74,7 +74,7 @@ static void	ft_activity(t_node *n)
 			usleep(5000 * 1000);
 		}
 	ft_message(n, " is sleeping\n", current_timestamp(), 12);
-	usleep(n->tt_sleep * 1000);
+	ft_sleep(n->tt_sleep);
 	ft_message(n, " is thinking\n", current_timestamp(), 12);
 }
 

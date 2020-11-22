@@ -67,6 +67,7 @@ int			ft_create(t_bin *var)
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 	{
 		sem_unlink(var->str_fork);
+		sem_unlink(var->str_std);
 		sem_unlink(var->str_die);
 		return (1);
 	}

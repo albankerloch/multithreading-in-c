@@ -90,5 +90,6 @@ void				ft_activity(t_node *n);
 int					ft_routine(t_node *n);
 int					ft_strisdigit(char *str);
 int					ft_check_arg(int ac, char **av);
+void				ft_sleep(int n);
 
 #endif
