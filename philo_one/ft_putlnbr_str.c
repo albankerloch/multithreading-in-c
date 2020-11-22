@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_str.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akerloc- <akerloc-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_three.h"
+#include "philo_one.h"
 
 static long long	ft_puiss_dix(int n)
 {
@@ -27,38 +27,34 @@ static long long	ft_puiss_dix(int n)
 	return (result);
 }
 
-static void			ft_rec(long long a, int n, int fd)
+static void			ft_rec(long long a, int p, t_node *n, int t)
 {
 	char		c;
 	long long	i;
 	long long	b;
 
-	i = ft_puiss_dix(n);
+	i = ft_puiss_dix(p);
 	c = a / i + 48;
-	write(fd, &c, 1);
-	if (n != 0)
+	n->str[t] = c;
+	if (p != 0)
 	{
 		b = a % i;
-		ft_rec(b, n - 1, fd);
+		ft_rec(b, p - 1, n, t + 1);
 	}
 }
 
-void				ft_putlnbr_fd(long long a, int fd)
+void				ft_putlnbr_str(long long a, t_node *n)
 {
-	int			n;
+	int			p;
 	long long	b;
 
-	if (a < 0)
-	{
-		write(fd, "-", 1);
-		a = -a;
-	}
 	b = a;
-	n = 0;
+	p = 0;
 	while ((b % 10) != b)
 	{
 		b = b / 10;
-		n++;
+		p++;
 	}
-	ft_rec(a, n, fd);
+	ft_rec(a, p, n, 0);
+	n->str[p + 1] = '\0';
 }

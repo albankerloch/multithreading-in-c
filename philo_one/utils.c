@@ -12,6 +12,49 @@
 
 #include "philo_one.h"
 
+void		ft_chg_str(t_node *n, char *str, unsigned int t, unsigned int j)
+{
+	unsigned int i;
+
+	i = 0;
+	while (i < j)
+	{
+		n->str[i + t] = str[i];
+		i++;
+	}
+	n->str[i + t] = '\n';
+	n->str[i + t + 1] = '\0';
+}
+
+void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
+{
+	unsigned int t;
+
+	pthread_mutex_lock(n->lock_std);
+	ft_putlnbr_str(tm, n);
+	n->str[13] = ' ';
+	ft_putnbr_str(n->value, n);
+	t = ft_strlen(n->str);
+	n->str[t] = ' ';
+	ft_chg_str(n, str, t, j);
+	write(1, n->str, ft_strlen(n->str));
+	pthread_mutex_unlock(n->lock_std);
+}
+
+void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)
+{
+	unsigned int t;
+
+	pthread_mutex_lock(n->lock_std);
+	ft_putlnbr_str(tm, n);
+	n->str[13] = ' ';
+	ft_putnbr_str(n->value, n);
+	t = ft_strlen(n->str);
+	n->str[t] = ' ';
+	ft_chg_str(n, str, t, j);
+	write(1, n->str, ft_strlen(n->str));
+}
+
 int			ft_check_arg(int ac, char **av)
 {
 	int i;
@@ -38,35 +81,6 @@ int			ft_strisdigit(char *str)
 		i++;
 	}
 	return (1);
-}
-
-void		ft_message(t_node *n, char *str, long long tm)
-{
-	int i;
-	int k;
-	int b;
-
-	pthread_mutex_lock(n->lock_s);
-	ft_putlnbr_mess(n, tm, 12);
-	n->mess[13] = ' ';
-	b = n->value;
-	k = 0;
-	while ((b % 10) != b)
-	{
-		b = b / 10;
-		k++;
-	}
-	b = n->value;
-	ft_putlnbr_mess(n, n->value, 14 + k);
-	i = 0;
-	while (str[i])
-	{
-		n->mess[i + 15 + k] = str[i];
-		i++;
-	}
-	n->mess[i + 15 + k] = '\0';
-	write(1, n->mess, ft_strlen(n->mess));
-	pthread_mutex_unlock(n->lock_s);
 }
 
 void		ft_sleep(int n)

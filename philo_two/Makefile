@@ -16,12 +16,8 @@ SRCS =	main.c \
 	thread.c \
 	ft_atoi.c \
 	ft_putlnbr_str.c \
-	ft_putlnbr_fd.c \
 	ft_putnbr_str.c \
-	ft_putnbr_fd.c \
-	ft_putstr_fd.c \
-	ft_strlen.c \
-	ft_isdigit.c
+	ft_strlen.c
 OBJS = ${SRCS:.c=.o}
 NAME = philo_two
 HEADER = .
