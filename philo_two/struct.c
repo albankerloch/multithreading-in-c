@@ -16,6 +16,7 @@ int			ft_clear(t_bin *var)
 {
 	sem_unlink(var->str_fork);
 	sem_unlink(var->str_die);
+	sem_unlink(var->str_std);
 	free(var->philo);
 	return (0);
 }
