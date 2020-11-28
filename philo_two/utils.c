@@ -40,6 +40,15 @@ int			ft_strisdigit(char *str)
 	return (1);
 }
 
+void		ft_sleep(int n)
+{
+	time_t start;
+
+	start = current_timestamp();
+	while ((current_timestamp() - start) < n)
+		usleep(200);
+}
+
 long long	current_timestamp(void)
 {
 	struct timeval	te;
