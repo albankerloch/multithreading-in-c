@@ -49,7 +49,7 @@ int	main(int ac, char **av)
 		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
 			return (ft_clear(&var, var.nb));
 		pthread_detach(var.philo[i].thread);
-		usleep(50);
+		usleep(10);
 		i++;
 	}
 	if (pthread_create(&(var.philo[i].thread), NULL, fn_monitor_eat, t))

@@ -48,6 +48,7 @@ int	main(int ac, char **av)
 		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
 			return (ft_clear(&var));
 		pthread_detach(var.philo[i].thread);
+		usleep(10);
 		i++;
 	}
 	t = &(var.philo[1]);

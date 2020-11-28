@@ -46,7 +46,7 @@ static int	ft_loop(int i, t_bin *var)
 		ft_routine(&var->philo[i]);
 		exit(0);
 	}
-	usleep(100);
+	usleep(10);
 	return (1);
 }
 
