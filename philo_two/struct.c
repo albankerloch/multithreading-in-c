@@ -14,8 +14,11 @@
 
 int			ft_clear(t_bin *var)
 {
+	sem_close(var->sem_fork);
 	sem_unlink(var->str_fork);
+	sem_close(var->sem_die);
 	sem_unlink(var->str_die);
+	sem_close(var->sem_std);
 	sem_unlink(var->str_std);
 	free(var->philo);
 	return (0);
@@ -65,11 +68,7 @@ int			ft_create(t_bin *var)
 	sem_unlink(var->str_std);
 	var->sem_std = sem_open(var->str_std, O_CREAT | O_EXCL, 0664, 1);
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
-	{
-		sem_unlink(var->str_fork);
-		sem_unlink(var->str_die);
 		return (1);
-	}
 	if (ft_create_philo(var))
 		return (1);
 	return (0);
