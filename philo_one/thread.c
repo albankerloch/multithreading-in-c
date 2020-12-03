@@ -46,7 +46,7 @@ void		*fn_monitor(void *p_data)
 	n = p_data;
 	while (!(n->var->end))
 	{
-		usleep(2000);
+		usleep(1000);
 		if (current_timestamp() - n->start > n->tt_die)
 		{
 			if (!(n->var->end))

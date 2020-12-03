@@ -46,14 +46,14 @@ void		*fn_monitor(void *p_data)
 	n = p_data;
 	while (!(n->var->end))
 	{
-		usleep(2000);
+		usleep(1000);
 		if (current_timestamp() - n->start > n->tt_die)
 		{
 			if (!(n->var->end))
-				ft_message_die(n, " died\n", n->start, 5);
+				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
 			sem_post(n->sem_die);
-			break ;
+			while (1);
 		}
 	}
 	return (0);
