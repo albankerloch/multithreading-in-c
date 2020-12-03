@@ -55,6 +55,6 @@ void		ft_putnbr_str_eat(int a, t_node *n)
 		b = b / 10;
 		p++;
 	}
-	ft_rec(a, p, n, 0);
-	n->str_eat[p + 1] = '\0';
+	ft_rec(a, p, n, 1);
+	n->str_eat[p + 2] = '\0';
 }

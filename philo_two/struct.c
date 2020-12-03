@@ -49,6 +49,7 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		var->philo[i].sem_std = var->sem_std;
+		var->philo[i].str_eat[0] = 'e';
 		ft_putnbr_str_eat(i, &(var->philo[i]));
 		sem_unlink(var->philo[i].str_eat);
 		if (!(var->philo[i].sem_eat =\
