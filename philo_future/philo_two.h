@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -41,6 +41,7 @@ typedef struct		s_node
 	pthread_t		monitor;
 	struct s_node	*next;
 	char			str[50];
+	sem_t			*sem_std;
 	struct s_bin	*var;
 }					t_node;
 
@@ -55,6 +56,10 @@ typedef struct		s_bin
 	t_node			*philo;
 	int				count_eat;
 	pthread_mutex_t	lock_std;
+	sem_t			*sem_std;
+	sem_t			*sem_fork;
+	char			str_std[2];
+	char			str_fork[2];
 }					t_bin;
 
 void				ft_sleep(int n);
