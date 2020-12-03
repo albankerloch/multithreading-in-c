@@ -42,6 +42,7 @@ typedef struct		s_node
 	int				fork_lock;
 	struct s_node	*next;
 	int				nb;
+	int				end;
 	char			str[50];
 	struct s_bin	*var;
 }					t_node;
