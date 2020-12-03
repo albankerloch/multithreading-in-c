@@ -22,6 +22,7 @@ int			ft_clear(t_bin *var, int i, int l)
 	{
 		sem_close(var->philo[j].sem_eat);
 		sem_unlink(var->philo[j].str_eat);
+		printf("%d %s\n", j, var->philo[j].str_eat);
 		j++;
 	}
 	sem_close(var->sem_fork);
