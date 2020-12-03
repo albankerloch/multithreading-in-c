@@ -53,6 +53,7 @@ typedef struct		s_bin
 	int				time_to_sleep;
 	int				nb_eat;
 	int				nb;
+	int				end;
 	t_node			*philo;
 	sem_t			*sem_die;
 	sem_t			*sem_std;

@@ -44,13 +44,14 @@ void		*fn_monitor(void *p_data)
 	t_node *n;
 
 	n = p_data;
-	while (1)
+	while (!(n->var->end))
 	{
 		usleep(2000);
-		if (current_timestamp() - n->start > n->tt_die && \
-n->count_eat != n->nb_eat)
+		if (current_timestamp() - n->start > n->tt_die)
 		{
-			ft_message_die(n, " died\n", n->start, 5);
+			if (!(n->var->end))
+				ft_message_die(n, " died\n", n->start, 5);
+			n->var->end = 1;
 			sem_post(n->sem_die);
 			break ;
 		}

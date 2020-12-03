@@ -56,7 +56,7 @@ int			main(int ac, char **av)
 	t_bin	var;
 
 	if (!(ft_arg(&var, ac, av)))
-		return (ft_clear(&var));
+		return (1);
 	i = 1;
 	while (i < var.nb + 1)
 	{
