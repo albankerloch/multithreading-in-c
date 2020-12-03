@@ -34,7 +34,6 @@ typedef struct		s_node
 	int				tt_sleep;
 	long long		start;
 	int				count_eat;
-	int				nb_eat;
 	pthread_t		thread;
 	pthread_t		monitor;
 	struct s_node	*next;

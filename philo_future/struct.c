@@ -45,14 +45,13 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].tt_eat = var->time_to_eat;
 		var->philo[i].tt_sleep = var->time_to_sleep;
 		var->philo[i].count_eat = 0;
-		var->philo[i].nb_eat = var->nb_eat;
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		var->philo[i].sem_std = var->sem_std;
-		var->philo[i].str_eat[0] = 'e';
 		ft_putnbr_str_eat(i, &(var->philo[i]));
 		sem_unlink(var->philo[i].str_eat);
-		if (!(var->philo[i].sem_eat = sem_open(var->philo[i].str_eat, O_CREAT | O_EXCL, 0664, 1)))
+		if (!(var->philo[i].sem_eat =\
+sem_open(var->philo[i].str_eat, O_CREAT | O_EXCL, 0664, 1)))
 			return ((!(ft_clear(var, i, 1))));
 		i++;
 	}
@@ -64,7 +63,8 @@ int			ft_create(t_bin *var)
 	var->str_fork[0] = 'f';
 	var->str_fork[1] = '\0';
 	sem_unlink(var->str_fork);
-	if (!(var->sem_fork = sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
+	if (!(var->sem_fork =\
+sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
 		return (1);
 	var->str_std[0] = 's';
 	var->str_std[1] = '\0';
