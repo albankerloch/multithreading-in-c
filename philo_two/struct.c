@@ -64,12 +64,6 @@ sem_open(var->philo[i].str_eat, O_CREAT | O_EXCL, 0664, 1)))
 
 int			ft_create_sem(t_bin *var)
 {
-	var->str_fork[0] = 'f';
-	var->str_fork[1] = '\0';
-	sem_unlink(var->str_fork);
-	if (!(var->sem_fork =\
-sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
-		return (1);
 	var->str_take[0] = 't';
 	var->str_take[1] = '\0';
 	sem_unlink(var->str_take);
@@ -96,6 +90,12 @@ sem_open(var->str_take, O_CREAT | O_EXCL, 0664, 1)))
 
 int			ft_create(t_bin *var)
 {
+	var->str_fork[0] = 'f';
+	var->str_fork[1] = '\0';
+	sem_unlink(var->str_fork);
+	if (!(var->sem_fork =\
+sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
+		return (1);
 	if (ft_create_sem(var))
 		return (1);
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
