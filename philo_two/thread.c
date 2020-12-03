@@ -27,12 +27,12 @@ void		*fn_monitor(void *p_data)
 			if (!(n->var->end))
 				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
-			printf("%d\n", n->var->end);
+			//printf("%d\n", n->var->end);
 			sem_post(n->var->sem_std);
 			sem_post(n->sem_eat);
 			return (0);
 		}
-		printf("%d %d %d\n", n->var->end, n->end, n->value);
+		//printf("%d %d %d\n", n->var->end, n->end, n->value);
 		sem_post(n->sem_eat);
 	}
 	return (0);
@@ -44,11 +44,11 @@ static int	ft_activity(t_node *n)
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	sem_wait(n->var->sem_fork);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
+	sem_wait(n->sem_eat);
 	n->start = current_timestamp();
-	pthread_mutex_lock(&(n->eat));
 	if (!(n->var->end))
 		ft_message(n, " is eating\n", n->start, 10);
-	pthread_mutex_unlock(&(n->eat));
+	sem_post(n->sem_eat);
 	ft_sleep(n->tt_eat);
 	sem_post(n->var->sem_fork);
 	sem_post(n->var->sem_fork);
