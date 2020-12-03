@@ -25,6 +25,7 @@ int	ft_arg(t_bin *var, int ac, char **av)
 	var->time_to_sleep = ft_atoi(av[4]);
 	var->nb_eat = ac == 6 ? ft_atoi(av[5]) : -1;
 	var->end = 0;
+	var->count_eat = 0;
 	if (ft_create(var))
 	{
 		write(2, "Memory allocation error\n",\
@@ -34,27 +35,47 @@ ft_strlen("Memory allocation error\n"));
 	return (1);
 }
 
+int	ft_go_thread(t_bin *var)
+{
+	int		i;
+	void	*t;
+
+	i = 1;
+	while (i < var->nb + 1)
+	{
+		t = &(var->philo[i]);
+		if (pthread_create(&(var->philo[i].thread), NULL, fn_philo, t))
+			return (0);
+		usleep(10);
+		i++;
+	}
+	usleep(100);
+	i = 1;
+	while (i < var->nb + 1)
+	{
+		t = &(var->philo[i]);
+		if (pthread_create(&(var->philo[i].monitor), NULL, fn_monitor, t))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
 	int		i;
 	t_bin	var;
-	void	*t;
 
 	if (!(ft_arg(&var, ac, av)))
 		return (1);
+	if (!(ft_go_thread(&var)))
+		return (ft_clear(&var, var.nb, 1));
 	i = 1;
 	while (i < var.nb + 1)
 	{
-		t = &(var.philo[i]);
-		if (pthread_create(&(var.philo[i].thread), NULL, fn_philo, t))
-			return (ft_clear(&var));
-		pthread_detach(var.philo[i].thread);
-		usleep(10);
+		pthread_join(var.philo[i].thread, NULL);
+		pthread_join(var.philo[i].monitor, NULL);
 		i++;
 	}
-	if (pthread_create(&(var.philo[i].thread), NULL, fn_monitor_eat, t))
-		return (ft_clear(&var));
-	pthread_detach(var.philo[i].thread);
-	sem_wait(var.sem_die);
-	return (ft_clear(&var));
+	return (ft_clear(&var, var.nb, 1));
 }

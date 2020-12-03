@@ -30,27 +30,28 @@ void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	sem_wait(n->sem_std);
+	sem_wait(n->var->sem_std);
 	ft_putlnbr_str(tm, n);
 	n->str[13] = ' ';
 	ft_putnbr_str(n->value, n);
 	t = ft_strlen(n->str);
 	n->str[t] = ' ';
 	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
-	sem_post(n->sem_std);
+	if (!(n->var->end))
+		write(1, n->str, ft_strlen(n->str));
+	sem_post(n->var->sem_std);
 }
 
 void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	sem_wait(n->sem_std);
 	ft_putlnbr_str(tm, n);
 	n->str[13] = ' ';
 	ft_putnbr_str(n->value, n);
 	t = ft_strlen(n->str);
 	n->str[t] = ' ';
 	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
+	if (!(n->var->end))
+		write(1, n->str, ft_strlen(n->str));
 }

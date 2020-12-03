@@ -17,6 +17,7 @@ SRCS =	main.c \
 	thread.c \
 	ft_atoi.c \
 	ft_putlnbr_str.c \
+	ft_putnbr_str_eat.c \
 	ft_putnbr_str.c \
 	ft_strlen.c
 OBJS = ${SRCS:.c=.o}
