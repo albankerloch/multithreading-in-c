@@ -55,7 +55,7 @@ int	main(int ac, char **av)
 	if (pthread_create(&(var.philo[i].thread), NULL, fn_monitor_eat, t))
 		return (ft_clear(&var, var.nb));
 	pthread_detach(var.philo[i].thread);
-	sem_wait(var->sem_die);
+	sem_wait(var.sem_die);
 	//pthread_mutex_lock(&(var.lock_die));
 	return (ft_clear(&var, var.nb));
 }

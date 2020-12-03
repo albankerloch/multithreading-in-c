@@ -59,8 +59,6 @@ typedef struct		s_bin
 	t_node			*philo;
 	pthread_mutex_t	lock_die;
 	pthread_mutex_t	lock_std;
-	char			str_die[2];
-	char			str_fork[2];
 	sem_t			*sem_die;
 	sem_t			*sem_std;
 	sem_t			*sem_fork;

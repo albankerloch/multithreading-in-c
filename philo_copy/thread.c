@@ -52,7 +52,7 @@ void		*fn_monitor(void *p_data)
 			if (!(n->var->end))
 				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
-			pthread_mutex_unlock(n->lock_die);
+			sem_post(n->sem_die);
 			break ;
 		}
 	}
