@@ -27,6 +27,7 @@ void		*fn_monitor(void *p_data)
 			if (!(n->var->end))
 				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
+			printf("%d\n", n->var->end);
 			sem_post(n->var->sem_std);
 			sem_post(n->sem_eat);
 			return (0);
