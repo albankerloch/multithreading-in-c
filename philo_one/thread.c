@@ -17,7 +17,7 @@ void		*fn_monitor(void *p_data)
 	t_node *n;
 
 	n = p_data;
-	while (!(n->var->end))
+	while (!(n->var->end) && !(n->end))
 	{
 		usleep(2000);
 		pthread_mutex_lock(&(n->eat));
@@ -52,7 +52,10 @@ static int	ft_activity(t_node *n)
 	pthread_mutex_unlock(&(n->lock));
 	n->count_eat = n->count_eat + 1;
 	if (n->count_eat >= n->var->nb_eat && n->var->nb_eat >= 0)
+	{
+		n->end = 1;
 		return (0);
+	}
 	ft_message(n, " is sleeping\n", current_timestamp(), 12);
 	if (!(n->var->end))
 		ft_sleep(n->tt_sleep);

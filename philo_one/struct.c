@@ -20,7 +20,7 @@ int			ft_clear(t_bin *var, int i, int l)
 	while (j < i + 1)
 	{
 		pthread_mutex_destroy(&(var->philo[i].lock));
-		if (l == 1 && j == i)
+		if (l == 0 && j == i)
 			break ;
 		pthread_mutex_destroy(&(var->philo[i].eat));
 		j++;
@@ -43,12 +43,13 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].tt_eat = var->time_to_eat;
 		var->philo[i].tt_sleep = var->time_to_sleep;
 		var->philo[i].count_eat = 0;
+		var->philo[i].end = 0;
 		var->philo[i].nb_eat = var->nb_eat;
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		var->philo[i].lock_std = &(var->lock_std);
 		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
-			return ((!(ft_clear(var, i, 1))));
+			return ((!(ft_clear(var, i, 0))));
 		if (pthread_mutex_init(&(var->philo[i].eat), NULL) != 0)
 			return ((!(ft_clear(var, i, 1))));
 		i++;

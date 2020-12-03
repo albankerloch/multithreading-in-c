@@ -45,6 +45,7 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].tt_eat = var->time_to_eat;
 		var->philo[i].tt_sleep = var->time_to_sleep;
 		var->philo[i].count_eat = 0;
+		var->philo[i].end = 0;
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
 		var->philo[i].sem_std = var->sem_std;

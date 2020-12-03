@@ -31,6 +31,7 @@ typedef struct		s_node
 	pthread_mutex_t	*lock_std;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	eat;
+	int				end;
 	int				tt_die;
 	int				tt_eat;
 	int				tt_sleep;

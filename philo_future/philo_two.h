@@ -29,6 +29,7 @@ typedef struct		s_node
 {
 	int				value;
 	pthread_mutex_t	eat;
+	int				end;
 	int				tt_die;
 	int				tt_eat;
 	int				tt_sleep;

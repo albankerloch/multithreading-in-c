@@ -56,7 +56,6 @@ int	ft_go_thread(t_bin *var)
 		t = &(var->philo[i]);
 		if (pthread_create(&(var->philo[i].monitor), NULL, fn_monitor, t))
 			return (0);
-		pthread_detach(var->philo[i].monitor);
 		i++;
 	}
 	return (1);
@@ -75,6 +74,7 @@ int	main(int ac, char **av)
 	while (i < var.nb + 1)
 	{
 		pthread_join(var.philo[i].thread, NULL);
+		pthread_join(var.philo[i].monitor, NULL);
 		i++;
 	}
 	return (ft_clear(&var, var.nb, 1));
