@@ -32,6 +32,7 @@ void		*fn_monitor(void *p_data)
 			sem_post(n->sem_eat);
 			return (0);
 		}
+		printf("%d %d %d\n", n->var->end, n->end, n->value);
 		sem_post(n->sem_eat);
 	}
 	return (0);
