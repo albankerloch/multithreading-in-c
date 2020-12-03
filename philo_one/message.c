@@ -37,7 +37,8 @@ void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
 	t = ft_strlen(n->str);
 	n->str[t] = ' ';
 	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
+	if (!(n->var->end))
+		write(1, n->str, ft_strlen(n->str));
 	pthread_mutex_unlock(n->lock_std);
 }
 
@@ -51,5 +52,6 @@ void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)
 	t = ft_strlen(n->str);
 	n->str[t] = ' ';
 	ft_chg_str(n, str, t, j);
-	write(1, n->str, ft_strlen(n->str));
+	if (!(n->var->end))
+		write(1, n->str, ft_strlen(n->str));
 }
