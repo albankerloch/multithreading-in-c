@@ -52,8 +52,7 @@ int	main(int ac, char **av)
 		usleep(10);
 		i++;
 	}
-	t = &(var.philo[1]);
-	if (pthread_create(&(var.philo[1].thread), NULL, fn_monitor_eat, t))
+	if (pthread_create(&(var.philo[i].thread), NULL, fn_monitor_eat, t))
 		return (ft_clear(&var));
 	pthread_detach(var.philo[i].thread);
 	sem_wait(var.sem_die);
