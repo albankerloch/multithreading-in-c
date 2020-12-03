@@ -45,7 +45,6 @@ void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	pthread_mutex_lock(n->lock_std);
 	ft_putlnbr_str(tm, n);
 	n->str[13] = ' ';
 	ft_putnbr_str(n->value, n);

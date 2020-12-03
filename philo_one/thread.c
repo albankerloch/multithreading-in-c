@@ -19,14 +19,15 @@ void		*fn_monitor(void *p_data)
 	n = p_data;
 	while (!(n->var->end))
 	{
-		//printf("%lld %d", n->start, n->tt_die);
 		usleep(2000);
 		pthread_mutex_lock(&(n->eat));
-		if (current_timestamp() - n->start > n->tt_die)
+		if (current_timestamp() - n->start > n->tt_die && !(n->var->end))
 		{
+			pthread_mutex_lock(n->lock_std);
 			if (!(n->var->end))
-				ft_message(n, " died\n", current_timestamp(), 5);
+				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
+			pthread_mutex_unlock(n->lock_std);
 			pthread_mutex_unlock(&(n->eat));
 			return (0);
 		}
@@ -75,7 +76,6 @@ void		*fn_philo(void *p_data)
 	ft_message(n, " is thinking\n", n->start, 12);
 	while (!(n->var->end))
 	{
-		//printf("%d %d", n->var->end, n->end);
 		if(!(ft_activity(n)))
 			return (0);
 	}
