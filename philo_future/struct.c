@@ -16,16 +16,18 @@ int			ft_clear(t_bin *var, int i, int l)
 {
 	int j;
 
+	(void)l;
 	j = 1;
 	while (j < i + 1)
 	{
-		pthread_mutex_destroy(&(var->philo[i].lock));
-		if (l == 1 && j == i)
-			break ;
-		pthread_mutex_destroy(&(var->philo[i].eat));
+		sem_close(var->philo[j].sem_eat);
+		sem_unlink(var->philo[j].str_eat);
 		j++;
 	}
-	pthread_mutex_destroy(&(var->lock_std));
+	sem_close(var->sem_fork);
+	sem_unlink(var->str_fork);
+	sem_close(var->sem_std);
+	sem_unlink(var->str_std);
 	free(var->philo);
 	return (1);
 }
@@ -46,10 +48,11 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].nb_eat = var->nb_eat;
 		var->philo[i].str[0] = '\0';
 		var->philo[i].var = var;
-		var->philo[i].lock_std = &(var->lock_std);
-		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
-			return ((!(ft_clear(var, i, 1))));
-		if (pthread_mutex_init(&(var->philo[i].eat), NULL) != 0)
+		var->philo[i].sem_std = var->sem_std;
+		var->philo[i].str_eat[0] = 'e';
+		ft_putnbr_str_eat(i, &(var->philo[i]));
+		sem_unlink(var->philo[i].str_eat);
+		if (!(var->philo[i].sem_eat = sem_open(var->philo[i].str_eat, O_CREAT | O_EXCL, 0664, 1)))
 			return ((!(ft_clear(var, i, 1))));
 		i++;
 	}
@@ -58,11 +61,26 @@ static int	ft_create_philo(t_bin *var, int i)
 
 int			ft_create(t_bin *var)
 {
-	if (pthread_mutex_init(&(var->lock_std), NULL) != 0)
+	var->str_fork[0] = 'f';
+	var->str_fork[1] = '\0';
+	sem_unlink(var->str_fork);
+	if (!(var->sem_fork = sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
 		return (1);
+	var->str_std[0] = 's';
+	var->str_std[1] = '\0';
+	sem_unlink(var->str_std);
+	if (!(var->sem_std = sem_open(var->str_std, O_CREAT | O_EXCL, 0664, 1)))
+	{
+		sem_close(var->sem_fork);
+		sem_unlink(var->str_fork);
+		return (1);
+	}
 	if (!(var->philo = malloc((var->nb + 1) * sizeof(t_node))))
 	{
-		pthread_mutex_destroy(&(var->lock_std));
+		sem_close(var->sem_fork);
+		sem_unlink(var->str_fork);
+		sem_close(var->sem_std);
+		sem_unlink(var->str_std);
 		return (1);
 	}
 	if (ft_create_philo(var, 1))

@@ -30,7 +30,7 @@ void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
 {
 	unsigned int t;
 
-	pthread_mutex_lock(n->lock_std);
+	sem_wait(n->var->sem_std);
 	ft_putlnbr_str(tm, n);
 	n->str[13] = ' ';
 	ft_putnbr_str(n->value, n);
@@ -39,7 +39,7 @@ void		ft_message(t_node *n, char *str, long long tm, unsigned int j)
 	ft_chg_str(n, str, t, j);
 	if (!(n->var->end))
 		write(1, n->str, ft_strlen(n->str));
-	pthread_mutex_unlock(n->lock_std);
+	sem_post(n->var->sem_std);
 }
 
 void		ft_message_die(t_node *n, char *str, long long tm, unsigned int j)

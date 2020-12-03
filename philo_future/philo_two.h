@@ -28,8 +28,6 @@ struct s_bin;
 typedef struct		s_node
 {
 	int				value;
-	pthread_mutex_t	*lock_std;
-	pthread_mutex_t	lock;
 	pthread_mutex_t	eat;
 	int				tt_die;
 	int				tt_eat;
@@ -42,6 +40,8 @@ typedef struct		s_node
 	struct s_node	*next;
 	char			str[50];
 	sem_t			*sem_std;
+	sem_t			*sem_eat;
+	char			str_eat[50];
 	struct s_bin	*var;
 }					t_node;
 
@@ -55,7 +55,6 @@ typedef struct		s_bin
 	int				end;
 	t_node			*philo;
 	int				count_eat;
-	pthread_mutex_t	lock_std;
 	sem_t			*sem_std;
 	sem_t			*sem_fork;
 	char			str_std[2];
@@ -79,6 +78,7 @@ long long			current_timestamp(void);
 void				print_value(sem_t *sem_die, int *val);
 void				ft_putlnbr_str(long long a, t_node *n);
 void				ft_putnbr_str(int a, t_node *n);
+void				ft_putnbr_str_eat(int a, t_node *n);
 void				ft_message(t_node *n, char *str, long long tm,\
 unsigned int j);
 int					ft_check_arg(int ac, char **av);

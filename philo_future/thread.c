@@ -20,27 +20,27 @@ void		*fn_monitor(void *p_data)
 	while (!(n->var->end))
 	{
 		usleep(2000);
-		pthread_mutex_lock(&(n->eat));
+		sem_wait(n->sem_eat);
 		if (current_timestamp() - n->start > n->tt_die && !(n->var->end))
 		{
-			pthread_mutex_lock(n->lock_std);
+			sem_wait(n->var->sem_std);
 			if (!(n->var->end))
 				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
-			pthread_mutex_unlock(n->lock_std);
-			pthread_mutex_unlock(&(n->eat));
+			sem_post(n->var->sem_std);
+			sem_post(n->sem_eat);
 			return (0);
 		}
-		pthread_mutex_unlock(&(n->eat));
+		sem_post(n->sem_eat);
 	}
 	return (0);
 }
 
 static int	ft_activity(t_node *n)
 {
-	pthread_mutex_lock(&(n->lock));
+	sem_wait(n->var->sem_fork);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
-	pthread_mutex_lock(&(n->next->lock));
+	sem_wait(n->var->sem_fork);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	n->start = current_timestamp();
 	pthread_mutex_lock(&(n->eat));
@@ -48,8 +48,8 @@ static int	ft_activity(t_node *n)
 		ft_message(n, " is eating\n", n->start, 10);
 	pthread_mutex_unlock(&(n->eat));
 	ft_sleep(n->tt_eat);
-	pthread_mutex_unlock(&(n->next->lock));
-	pthread_mutex_unlock(&(n->lock));
+	sem_post(n->var->sem_fork);
+	sem_post(n->var->sem_fork);
 	n->count_eat = n->count_eat + 1;
 	if (n->count_eat >= n->var->nb_eat && n->var->nb_eat >= 0)
 		return (0);
