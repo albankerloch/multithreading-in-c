@@ -73,7 +73,7 @@ int					ft_isdigit(int i);
 int					ft_atoi(const char *str);
 int					ft_arg(t_bin *var, int ac, char **av);
 int					ft_create(t_bin *var);
-int					ft_clear(t_bin *var, int i);
+int					ft_clear(t_bin *var, int i, int l);
 void				*fn_philo(void *p_data);
 void				*fn_monitor_eat(void *p_data);
 void				*fn_monitor(void *p_data);
