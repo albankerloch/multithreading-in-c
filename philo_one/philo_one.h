@@ -38,7 +38,7 @@ typedef struct		s_node
 	int				count_eat;
 	int				nb_eat;
 	pthread_t		thread;
-	pthread_t		monitor_die;
+	pthread_t		monitor;
 	int				fork_lock;
 	struct s_node	*next;
 	int				nb;
@@ -55,6 +55,7 @@ typedef struct		s_bin
 	int				nb;
 	int				end;
 	t_node			*philo;
+	int				count_eat;
 	pthread_mutex_t	lock_die;
 	pthread_mutex_t	lock_std;
 	char			str_die[2];
