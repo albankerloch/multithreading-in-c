@@ -23,6 +23,8 @@ int			ft_check_arg(int ac, char **av)
 			return (0);
 		i++;
 	}
+	if (ac == 6 && ft_atoi(av[5]) == 0)
+		return (0);
 	return (1);
 }
 

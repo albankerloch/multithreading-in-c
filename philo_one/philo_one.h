@@ -40,10 +40,7 @@ typedef struct		s_node
 	int				nb_eat;
 	pthread_t		thread;
 	pthread_t		monitor;
-	int				fork_lock;
 	struct s_node	*next;
-	int				nb;
-	int				end;
 	char			str[50];
 	struct s_bin	*var;
 }					t_node;
@@ -87,5 +84,6 @@ int					ft_check_arg(int ac, char **av);
 int					ft_strisdigit(char *str);
 void				ft_message_die(t_node *n, char *str, long long tm,\
 unsigned int j);
+int					ft_go_thread(t_bin *var);
 
 #endif
