@@ -14,7 +14,7 @@
 
 int	ft_arg(t_bin *var, int ac, char **av)
 {
-	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)))
+	if (ac > 6 || ac < 5 || (!ft_check_arg(ac, av)) || (ac == 6 && ft_atoi(av[5]) == 0))
 	{
 		write(2, "Argument error\n", ft_strlen("Argument error\n"));
 		return (0);
@@ -52,6 +52,7 @@ int	main(int ac, char **av)
 		usleep(10);
 		i++;
 	}
+	usleep(100);
 	i = 1;
 	while (i < var.nb + 1)
 	{
