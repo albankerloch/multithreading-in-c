@@ -28,6 +28,8 @@ int			ft_clear(t_bin *var, int i, int l)
 	sem_unlink(var->str_fork);
 	sem_close(var->sem_std);
 	sem_unlink(var->str_std);
+	sem_close(var->sem_take);
+	sem_unlink(var->str_take);
 	free(var->philo);
 	return (1);
 }
@@ -68,6 +70,16 @@ int			ft_create_sem(t_bin *var)
 	if (!(var->sem_fork =\
 sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
 		return (1);
+	var->str_take[0] = 't';
+	var->str_take[1] = '\0';
+	sem_unlink(var->str_take);
+	if (!(var->sem_take =\
+sem_open(var->str_take, O_CREAT | O_EXCL, 0664, 1)))
+	{
+		sem_close(var->sem_fork);
+		sem_unlink(var->str_fork);
+		return (1);
+	}
 	var->str_std[0] = 's';
 	var->str_std[1] = '\0';
 	sem_unlink(var->str_std);
@@ -75,6 +87,8 @@ sem_open(var->str_fork, O_CREAT | O_EXCL, 0664, var->nb)))
 	{
 		sem_close(var->sem_fork);
 		sem_unlink(var->str_fork);
+		sem_close(var->sem_take);
+		sem_unlink(var->str_take);
 		return (1);
 	}
 	return (0);

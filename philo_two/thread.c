@@ -40,16 +40,18 @@ void		*fn_monitor(void *p_data)
 
 static int	ft_activity(t_node *n)
 {
+	sem_wait(n->var->sem_take);
 	sem_wait(n->var->sem_fork);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
 	sem_wait(n->var->sem_fork);
 	ft_message(n, " has taken a fork\n", current_timestamp(), 17);
+	sem_post(n->var->sem_take);
 	sem_wait(n->sem_eat);
 	n->start = current_timestamp();
 	if (!(n->var->end))
 		ft_message(n, " is eating\n", n->start, 10);
-	sem_post(n->sem_eat);
 	ft_sleep(n->tt_eat);
+	sem_post(n->sem_eat);
 	sem_post(n->var->sem_fork);
 	sem_post(n->var->sem_fork);
 	n->count_eat = n->count_eat + 1;

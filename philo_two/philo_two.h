@@ -55,7 +55,9 @@ typedef struct		s_bin
 	t_node			*philo;
 	int				count_eat;
 	sem_t			*sem_std;
+	sem_t			*sem_take;
 	sem_t			*sem_fork;
+	char			str_take[2];
 	char			str_std[2];
 	char			str_fork[2];
 }					t_bin;
