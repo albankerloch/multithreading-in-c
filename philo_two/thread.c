@@ -27,12 +27,12 @@ void		*fn_monitor(void *p_data)
 			if (!(n->var->end))
 				ft_message_die(n, " died\n", current_timestamp(), 5);
 			n->var->end = 1;
-			//printf("%d\n", n->var->end);
+			printf("%d\n", n->var->end);
 			sem_post(n->var->sem_std);
 			sem_post(n->sem_eat);
 			return (0);
 		}
-		//printf("%d %d %d\n", n->var->end, n->end, n->value);
+		printf("%d %d %d\n", n->var->end, n->end, n->value);
 		sem_post(n->sem_eat);
 	}
 	return (0);
@@ -74,6 +74,7 @@ void		*fn_philo(void *p_data)
 	ft_message(n, " is thinking\n", n->start, 12);
 	while (!(n->var->end))
 	{
+		printf("%d %d\n", n->var->end, n->value);
 		if (!(ft_activity(n)))
 			return (0);
 	}
