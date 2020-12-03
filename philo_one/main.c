@@ -58,8 +58,13 @@ int	main(int ac, char **av)
 		t = &(var.philo[i]);
 		if (pthread_create(&(var.philo[i].monitor), NULL, fn_monitor, t))
 			return (ft_clear(&var, var.nb));
-		usleep(10);
-		pthread_join(var.philo[i].monitor, NULL);
+		pthread_detach(var.philo[i].monitor);
+		i++;
+	}
+	i = 1;
+	while (i < var.nb + 1)
+	{
+		pthread_join(var.philo[i].thread, NULL);
 		i++;
 	}
 	return (ft_clear(&var, var.nb));

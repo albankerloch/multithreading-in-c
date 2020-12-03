@@ -20,6 +20,7 @@ int			ft_clear(t_bin *var, int i)
 	while (j < i + 1)
 	{
 		pthread_mutex_destroy(&(var->philo[i].lock));
+		pthread_mutex_destroy(&(var->philo[i].eat));
 		j++;
 	}
 	pthread_mutex_destroy(&(var->lock_die));
@@ -50,6 +51,8 @@ static int	ft_create_philo(t_bin *var, int i)
 		var->philo[i].lock_die = &(var->lock_die);
 		var->philo[i].lock_std = &(var->lock_std);
 		if (pthread_mutex_init(&(var->philo[i].lock), NULL) != 0)
+			return ((!(ft_clear(var, i))));
+		if (pthread_mutex_init(&(var->philo[i].eat), NULL) != 0)
 			return ((!(ft_clear(var, i))));
 		i++;
 	}
