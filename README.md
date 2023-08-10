@@ -1,4 +1,4 @@
-# Multithreading in C++
+# Multithreading in C
 
 To test three different multithreading options, three programs simulates a similar situation : a number of philosophers need to eat when there in a limited number of fork. If one don't eat on time, the program must stop.
 
